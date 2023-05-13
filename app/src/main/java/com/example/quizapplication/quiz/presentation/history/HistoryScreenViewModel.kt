@@ -14,7 +14,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HistoryScreenViewModel @Inject constructor(
     private val repository: QuizRepository
-): ViewModel() {
+) : ViewModel() {
 
     var state: HistoryUiState by mutableStateOf(HistoryUiState.Loading)
         private set
@@ -23,7 +23,7 @@ class HistoryScreenViewModel @Inject constructor(
     }
 
     fun onEvent(event: HistoryScreenEvents) {
-        when(event) {
+        when (event) {
             is HistoryScreenEvents.DeleteHistory -> deleteAllHistory()
         }
     }
@@ -32,7 +32,7 @@ class HistoryScreenViewModel @Inject constructor(
         viewModelScope.launch {
             val historyResponse = repository.getAllHistories()
 
-            state = when(historyResponse) {
+            state = when (historyResponse) {
                 is NZResult.Success -> {
                     val histories = historyResponse.data
                     if (histories.isEmpty()) {
@@ -51,7 +51,7 @@ class HistoryScreenViewModel @Inject constructor(
         viewModelScope.launch {
             val deleteHistoryResponse = repository.deleteAllHistory()
 
-            when(deleteHistoryResponse) {
+            when (deleteHistoryResponse) {
                 is NZResult.Success -> {
                     state = HistoryUiState.NoData
                 }

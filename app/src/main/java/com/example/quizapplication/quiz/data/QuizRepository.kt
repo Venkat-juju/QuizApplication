@@ -6,7 +6,6 @@ import com.example.quizapplication.quiz.domain.model.Topic
 import com.example.quizapplication.quiz.presentation.history.QuizHistory
 import com.example.quizapplication.quiz.util.NZResult
 
-
 interface QuizRepository {
 
     suspend fun getAllSubjects(): NZResult<List<Subject>>

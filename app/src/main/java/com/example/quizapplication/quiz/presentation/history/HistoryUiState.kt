@@ -1,13 +1,13 @@
 package com.example.quizapplication.quiz.presentation.history
 
 sealed interface HistoryUiState {
-    object Loading: HistoryUiState
+    object Loading : HistoryUiState
 
-    data class Success(val history: List<QuizHistory>): HistoryUiState
+    data class Success(val history: List<QuizHistory>) : HistoryUiState
 
-    object NoData: HistoryUiState
+    object NoData : HistoryUiState
 
-    object Error: HistoryUiState
+    object Error : HistoryUiState
 }
 
 data class QuizHistory(
@@ -18,4 +18,3 @@ data class QuizHistory(
     val wrongAnswers: Int,
     val skippedAnswer: Int
 )
-

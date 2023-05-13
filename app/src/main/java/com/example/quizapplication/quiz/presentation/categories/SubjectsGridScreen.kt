@@ -40,7 +40,6 @@ import com.example.quizapplication.R
 import com.example.quizapplication.quiz.presentation.compoenents.InitialIcon
 import com.example.quizapplication.ui.theme.QuizApplicationTheme
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SubjectsScreen(
@@ -69,7 +68,7 @@ fun SubjectsScreen(
                     scrolledContainerColor = MaterialTheme.colorScheme.primary,
                     navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
                     titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                    actionIconContentColor= MaterialTheme.colorScheme.onPrimary,
+                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
                 ),
                 scrollBehavior = scrollBehavior,
             )
@@ -79,7 +78,7 @@ fun SubjectsScreen(
             .nestedScroll(scrollBehavior.nestedScrollConnection)
             .fillMaxSize()
     ) { innerPadding ->
-        when(state) {
+        when (state) {
             is SubjectsScreenUiState.Loading -> {
                 Box(
                     modifier = Modifier.fillMaxSize(),
@@ -117,8 +116,8 @@ fun SubjectsGrid(
             .padding(4.dp)
     ) {
         items(
-            span = {index ->
-                if (index == 0) {
+            span = { index ->
+                if (index == 0 ) {
                     GridItemSpan(maxLineSpan)
                 } else {
                     GridItemSpan(1)
@@ -149,7 +148,10 @@ fun SubjectsGrid(
                                 .padding(start = 12.dp),
                             horizontalArrangement = Arrangement.Center
                         ) {
-                            Icon(painter = painterResource(id = R.drawable.ic_bookmark_outlined), contentDescription = "")
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_bookmark_outlined),
+                                contentDescription = ""
+                            )
                             Text(
                                 "Bookmarks",
                                 modifier = Modifier.padding(start = 8.dp),
@@ -220,7 +222,9 @@ fun SubjectsGrid(
 fun SubjectsScreenPreview() {
     QuizApplicationTheme {
         SubjectsScreen(
-            state = SubjectsScreenUiState.Success(listOf("Tamil", "English", "Maths", "Science", "Social", "GK")),
+            state = SubjectsScreenUiState.Success(
+                listOf("Tamil", "English", "Maths", "Science", "Social", "GK")
+            ),
             onSubjectSelected = {},
             onBookmarksClicked = {},
             onHistoryClicked = {},

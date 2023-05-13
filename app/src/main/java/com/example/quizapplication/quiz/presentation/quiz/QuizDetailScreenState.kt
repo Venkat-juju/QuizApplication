@@ -4,7 +4,10 @@ import com.example.quizapplication.quiz.domain.model.Question
 
 sealed class QuizDetailScreenState(val quizTitle: String, val type: QuizDetailType) {
 
-    data class Loading(val title: String, val quizType: QuizDetailType): QuizDetailScreenState(title, quizType)
+    data class Loading(
+        val title: String,
+        val quizType: QuizDetailType
+    ) : QuizDetailScreenState(title, quizType)
 
     data class Success(
         val questions: List<UiQuestion>,
@@ -13,9 +16,13 @@ sealed class QuizDetailScreenState(val quizTitle: String, val type: QuizDetailTy
         val isSubmitting: Boolean = false,
         val result: QuizResult? = null,
         val historyId: Long? = null
-    ): QuizDetailScreenState(quizTitle = title, quizType)
+    ) : QuizDetailScreenState(quizTitle = title, quizType)
 
-    data class Error(val title: String, val quizType: QuizDetailType, val errorMsg: String): QuizDetailScreenState(title, quizType)
+    data class Error(
+        val title: String,
+        val quizType: QuizDetailType,
+        val errorMsg: String
+    ) : QuizDetailScreenState(title, quizType)
 }
 
 data class UiQuestion(

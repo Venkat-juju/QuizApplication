@@ -1,7 +1,6 @@
 package com.example.quizapplication.quiz.data.remote.mappers
 
 import com.example.quizapplication.quiz.data.local.entities.QuestionsEntity
-import com.example.quizapplication.quiz.data.local.entities.QuizHistoryEntity
 import com.example.quizapplication.quiz.data.local.entities.TopicsEntity
 import com.example.quizapplication.quiz.data.remote.model.RemoteTopic
 import com.example.quizapplication.quiz.domain.model.Option
@@ -64,7 +63,7 @@ fun UiQuestion.toQuestion(): Question {
     return Question(
         questionId = this.questionId,
         questionStr = this.question,
-        options = this.options.map{it.toOption()},
+        options = this.options.map { it.toOption() },
         correctAnswer = this.correctOption.toOption(),
         explanation = this.explanation,
         isBookmarked = this.isBookmarked,

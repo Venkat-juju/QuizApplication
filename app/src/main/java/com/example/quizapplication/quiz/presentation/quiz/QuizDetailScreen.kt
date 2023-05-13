@@ -97,7 +97,9 @@ fun QuizDetailScreen(
             onSubmitted(
                 state.questions.size,
                 state.questions.filter { it.selectedOption == it.correctOption }.size,
-                state.questions.filter { !it.selectedOption.isNullOrBlank() && it.selectedOption != it.correctOption }.size,
+                state.questions.filter {
+                    !it.selectedOption.isNullOrBlank() && it.selectedOption != it.correctOption
+                }.size,
                 state.historyId ?: -1L
             )
         }
@@ -134,7 +136,9 @@ fun QuizDetailScreen(
                 navigationIcon = {
                     IconButton(
                         onClick = {
-                            if (state.type == QuizDetailType.RESULT_DETAIL || state.type == QuizDetailType.BOOKMARKS) {
+                            if (state.type == QuizDetailType.RESULT_DETAIL ||
+                                state.type == QuizDetailType.BOOKMARKS
+                            ) {
                                 onBackClicked()
                             } else {
                                 showExitConfirmationDialog = true
@@ -145,7 +149,10 @@ fun QuizDetailScreen(
                     }
                 },
                 actions = {
-                    if (state.type != QuizDetailType.RESULT_DETAIL && state.type != QuizDetailType.BOOKMARKS) {
+                    if (
+                        state.type != QuizDetailType.RESULT_DETAIL &&
+                        state.type != QuizDetailType.BOOKMARKS
+                    ) {
                         Button(
                             onClick = {
                                 showSubmitDialog = true
@@ -163,7 +170,7 @@ fun QuizDetailScreen(
         Column(
             modifier = Modifier.padding(innerPadding)
         ) {
-            when(state) {
+            when (state) {
                 is QuizDetailScreenState.Loading -> {
                     Box(
                         modifier = Modifier.fillMaxSize(),
@@ -192,7 +199,9 @@ fun QuizDetailScreen(
                     if (showSubmitLoader) {
                         LoadingDialog(loadingMessage = "Submitting...")
                     }
-                    NZLinearProgressIndicator(indicatorProgress = (state.questions.filter { it.selectedOption != null }.size.toFloat() / state.questions.size))
+                    NZLinearProgressIndicator(
+                        indicatorProgress = (state.questions.filter { it.selectedOption != null }.size.toFloat() / state.questions.size)
+                    )
                     LazyColumn(
                         verticalArrangement = Arrangement.spacedBy(space = 8.dp),
                         modifier = Modifier.padding(horizontal = 8.dp),
@@ -201,7 +210,7 @@ fun QuizDetailScreen(
                         itemsIndexed(
                             items = state.questions,
                             key = { index, _ -> index }
-                        ) {index, quizQuestion ->
+                        ) { index, quizQuestion ->
                             QuestionDetail(
                                 question = quizQuestion.question,
                                 options = quizQuestion.options,
@@ -266,23 +275,29 @@ fun QuestionDetail(
             ) {
                 Text(text = "Question $questionIndex", fontWeight = FontWeight.Bold)
                 Row {
-                    AnimatedContent(targetState = isBookmarked, transitionSpec = { scaleIn() with scaleOut() }) {
+                    AnimatedContent(
+                        targetState = isBookmarked,
+                        transitionSpec = { scaleIn() with scaleOut() },
+                        label = ""
+                    ) {
                         IconButton(onClick = { onBookmarkButtonClicked(questionIndex) }) {
                             Icon(
-                                painter = painterResource(id = if (isBookmarked)R.drawable.ic_bookmark_filled else R.drawable.ic_bookmark_outlined),
+                                painter = painterResource(
+                                    id = if (isBookmarked)R.drawable.ic_bookmark_filled
+                                        else R.drawable.ic_bookmark_outlined
+                                ),
                                 contentDescription = "Bookmark"
                             )
                         }
                     }
-
-                    IconButton(onClick = { /* TODO */} ) {
-                        Icon(Icons.Default.MoreVert, "asdf")
-                    }
                 }
             }
-            Divider(thickness = 1.dp, modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp))
+            Divider(
+                thickness = 1.dp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp)
+            )
             Text(text = question, modifier = Modifier.padding(12.dp))
             options.forEach { optionStr ->
                 Row(
@@ -308,12 +323,18 @@ fun QuestionDetail(
                         .selectable(optionStr == selectedOption) {
                             onOptionSelected(optionStr)
                         }
-                        .background(
+                        .background (
                             color = if (type == QuizDetailType.TEST && selectedOption == optionStr)
                                 Color.Blue.copy(alpha = 0.1f)
-                            else if ((type == QuizDetailType.PRACTICE && !selectedOption.isNullOrBlank() && optionStr == correctAnswer) || ((type == QuizDetailType.RESULT_DETAIL || type == QuizDetailType.BOOKMARKS) && optionStr == correctAnswer))
+                            else if (
+                                (type == QuizDetailType.PRACTICE && !selectedOption.isNullOrBlank() && optionStr == correctAnswer) ||
+                                ((type == QuizDetailType.RESULT_DETAIL || type == QuizDetailType.BOOKMARKS) && optionStr == correctAnswer)
+                            )
                                 Color.Green.copy(alpha = 0.1f)
-                            else if ((type == QuizDetailType.PRACTICE || type == QuizDetailType.RESULT_DETAIL) && !selectedOption.isNullOrBlank() && selectedOption == optionStr)
+                            else if (
+                                (type == QuizDetailType.PRACTICE || type == QuizDetailType.RESULT_DETAIL) &&
+                                !selectedOption.isNullOrBlank() && selectedOption == optionStr
+                            )
                                 Color.Red.copy(alpha = 0.1f)
                             else
                                 Color.Transparent
@@ -322,13 +343,37 @@ fun QuestionDetail(
 
                 ) {
                     if (type == QuizDetailType.TEST) {
-                        RadioButton(selected = optionStr == selectedOption, onClick = null, modifier = Modifier.padding(end = 8.dp))
-                    } else if ((type == QuizDetailType.PRACTICE && !selectedOption.isNullOrBlank() && optionStr == correctAnswer) || ((type == QuizDetailType.RESULT_DETAIL || type == QuizDetailType.BOOKMARKS) && optionStr == correctAnswer)) {
-                        Icon(Icons.Default.Check, "correct answer", tint = Color.Green, modifier = Modifier.padding(end = 8.dp))
-                    } else if ((type == QuizDetailType.PRACTICE || type == QuizDetailType.RESULT_DETAIL) && !selectedOption.isNullOrBlank() && selectedOption == optionStr) {
-                        Icon(Icons.Default.Clear, "wrong answer", tint = Color.Red, modifier = Modifier.padding(end = 8.dp))
+                        RadioButton(
+                            selected = optionStr == selectedOption,
+                            onClick = null,
+                            modifier = Modifier.padding(end = 8.dp)
+                        )
+                    } else if (
+                        (type == QuizDetailType.PRACTICE && !selectedOption.isNullOrBlank() && optionStr == correctAnswer) ||
+                        ((type == QuizDetailType.RESULT_DETAIL || type == QuizDetailType.BOOKMARKS) && optionStr == correctAnswer)
+                    ) {
+                        Icon(
+                            Icons.Default.Check,
+                            "correct answer",
+                            tint = Color.Green,
+                            modifier = Modifier.padding(end = 8.dp)
+                        )
+                    } else if (
+                        (type == QuizDetailType.PRACTICE || type == QuizDetailType.RESULT_DETAIL) &&
+                        !selectedOption.isNullOrBlank() && selectedOption == optionStr
+                    ) {
+                        Icon(
+                            Icons.Default.Clear,
+                            "wrong answer",
+                            tint = Color.Red,
+                            modifier = Modifier.padding(end = 8.dp)
+                        )
                     } else {
-                        RadioButton(selected = false, onClick = null, modifier = Modifier.padding(end = 8.dp))
+                        RadioButton(
+                            selected = false,
+                            onClick = null,
+                            modifier = Modifier.padding(end = 8.dp)
+                        )
                     }
                     Text(
                         text = optionStr,
@@ -338,10 +383,15 @@ fun QuestionDetail(
                 }
             }
             Spacer(modifier = Modifier.height(12.dp))
-            AnimatedVisibility(visible = type == QuizDetailType.RESULT_DETAIL || (type == QuizDetailType.PRACTICE && !selectedOption.isNullOrBlank())) {
-              Divider(modifier = Modifier
-                  .fillMaxWidth()
-                  .padding(horizontal = 8.dp))
+            AnimatedVisibility(
+                visible = type == QuizDetailType.RESULT_DETAIL ||
+                        (type == QuizDetailType.PRACTICE && !selectedOption.isNullOrBlank())
+            ) {
+              Divider(
+                  modifier = Modifier
+                      .fillMaxWidth()
+                      .padding(horizontal = 8.dp)
+              )
                 Column {
                     Text(
                         text = if (showExplanation) "Hide Explanation" else "Show Explanation",
@@ -459,14 +509,15 @@ fun QuestionDetailPreview() {
             question = "This is sample question?",
             options = listOf(
                 "This is Option1",
-                "This is the longer option in the list of options. This could be much longer than " +
-                        "you expect. This is to check how it behaves for longer text options.",
+                "This is the longer option in the list of options. " +
+                "This could be much longer than you expect. This is to check how it behaves " +
+                "for longer text options.",
                 "Option3"
             ),
             selectedOption = selectedOption,
             correctAnswer = "",
             explanation = "",
-            onOptionSelected =  { option ->
+            onOptionSelected = { option ->
                 selectedOption = option
             },
             type = QuizDetailType.PRACTICE,

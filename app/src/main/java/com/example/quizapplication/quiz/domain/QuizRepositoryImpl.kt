@@ -20,10 +20,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class QuizRepositoryImpl @Inject constructor (
+class QuizRepositoryImpl @Inject constructor(
     private val remoteDataSource: QuizRemoteDataSource,
     private val localDataSource: QuizDao
-): QuizRepository {
+) : QuizRepository {
 
     override suspend fun getAllSubjects(): NZResult<List<Subject>> {
         val cachedSubjects = localDataSource.getAllSubjects()
@@ -55,9 +55,11 @@ class QuizRepositoryImpl @Inject constructor (
         if (cachedTopics.isEmpty()) {
             val topicsFromRemote = remoteDataSource.getAllTopics()
 
-            when(topicsFromRemote) {
+            when (topicsFromRemote) {
                 is NZResult.Success -> {
-                    localDataSource.insertTopics(topicsFromRemote.data.map(RemoteTopic::toTopicEntity))
+                    localDataSource.insertTopics(
+                        topicsFromRemote.data.map(RemoteTopic::toTopicEntity)
+                    )
 
                     val topics = localDataSource.getTopicsBySubjectName(subjectName).map(TopicsEntity::toTopic)
 
@@ -90,7 +92,9 @@ class QuizRepositoryImpl @Inject constructor (
 
             when(questionsFromRemote) {
                 is NZResult.Success -> {
-                    localDataSource.insertQuestions(questionsFromRemote.data.map(Question::toQuestionsEntity))
+                    localDataSource.insertQuestions(
+                        questionsFromRemote.data.map(Question::toQuestionsEntity)
+                    )
 
                     return NZResult.Success(
                         data = localDataSource.getQuestionsByTopic(topicId, count).map(QuestionsEntity::toQuestion)
@@ -115,7 +119,9 @@ class QuizRepositoryImpl @Inject constructor (
         }
 
         localDataSource.insertHistory(questionsHistory)
-        localDataSource.markQuestionsAsAttempted(questions.filter { it.selectedOption != null }.map(Question::questionId))
+        localDataSource.markQuestionsAsAttempted(
+            questions.filter { it.selectedOption != null }.map(Question::questionId)
+        )
 
         return NZResult.Success(data = historyId)
     }
@@ -128,13 +134,16 @@ class QuizRepositoryImpl @Inject constructor (
     }
 
     override suspend fun getHistoryQuestions(historyId: Long): NZResult<List<Question>> {
-        val historyQuestions = localDataSource.getHistoryQuestions(historyId).map { Pair(it.questionId, it.selectedOptionIndex) }
+        val historyQuestions = localDataSource.getHistoryQuestions(historyId)
+            .map { Pair(it.questionId, it.selectedOptionIndex) }
 
         val questions = localDataSource.getQuestionsById(historyQuestions.map{ it.first }).map(QuestionsEntity::toQuestion)
 
         return NZResult.Success(
             data = questions.map { question ->
-                val selectedOptionIndex = historyQuestions.find { it.first == question.questionId }?.second
+                val selectedOptionIndex = historyQuestions.find {
+                    it.first == question.questionId
+                }?.second
                 selectedOptionIndex?.let {
                     if (selectedOptionIndex != -1) {
                         question.copy(selectedOption = question.options[selectedOptionIndex])
@@ -150,7 +159,7 @@ class QuizRepositoryImpl @Inject constructor (
 
         val bookmarkedTopics = localDataSource.getTopicsById(distinctTopicIds)
         val topics = bookmarkedTopics.map(TopicsEntity::toTopic).map {topic ->
-            topic.copy(numberOfQuestions = allBookmarkedQuestions.count { it.topicId == topic.topicId})
+            topic.copy(numberOfQuestions = allBookmarkedQuestions.count { it.topicId == topic.topicId })
         }
 
         return NZResult.Success(
@@ -172,9 +181,15 @@ class QuizRepositoryImpl @Inject constructor (
         val historyList: MutableList<QuizHistory> = mutableListOf()
 
         history.entries.forEach { historyItem ->
-            val questions = localDataSource.getQuestionsById(historyItem.value.map(QuizHistoryEntity::questionId))
-            val topicsId = questions.distinctBy(QuestionsEntity::topicId).map(QuestionsEntity::topicId)
-            val topicsName = localDataSource.getTopicsById(topicsId).map(TopicsEntity::topicName)
+            val questions = localDataSource.getQuestionsById(
+                historyItem.value.map(QuizHistoryEntity::questionId)
+            )
+            val topicsId = questions
+                .distinctBy(QuestionsEntity::topicId)
+                .map(QuestionsEntity::topicId)
+            val topicsName = localDataSource
+                .getTopicsById(topicsId)
+                .map(TopicsEntity::topicName)
 
             val totalQuestions = historyItem.value.size
             val numberOfCorrectAnsweredQuestions = historyItem.value

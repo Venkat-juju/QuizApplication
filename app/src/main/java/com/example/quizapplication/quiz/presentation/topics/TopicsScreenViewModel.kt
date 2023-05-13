@@ -25,7 +25,7 @@ class TopicsScreenViewModel @Inject constructor(
         private set
 
     init {
-        when(type) {
+        when (type) {
             TopicScreenType.ALL.ordinal -> fetchTheTopics(subjectName)
             TopicScreenType.BOOKMARKS.ordinal -> fetchBookmarkTopics()
         }
@@ -36,7 +36,7 @@ class TopicsScreenViewModel @Inject constructor(
 
             val topics = quizRepository.getTopicsBySubject(subjectName)
 
-            state = when(topics) {
+            state = when (topics) {
                 is NZResult.Success -> {
                     TopicScreenUiState.Success(
                         topics = topics.data,
@@ -59,7 +59,7 @@ class TopicsScreenViewModel @Inject constructor(
         viewModelScope.launch {
             val bookmarkedTopics = quizRepository.getAllBookmarkedTopics()
 
-            state = when(bookmarkedTopics) {
+            state = when (bookmarkedTopics) {
                 is NZResult.Success -> {
                     if (bookmarkedTopics.data.isEmpty()) {
                         TopicScreenUiState.NoData(TopicScreenType.values()[type])

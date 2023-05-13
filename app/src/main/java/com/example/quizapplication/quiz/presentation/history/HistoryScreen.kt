@@ -94,12 +94,15 @@ fun HistoryScreen(
                     scrolledContainerColor = MaterialTheme.colorScheme.primary,
                     navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
                     titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                    actionIconContentColor= MaterialTheme.colorScheme.onPrimary,
+                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
                 ),
                 scrollBehavior = scrollBehavior,
                 actions = {
                     IconButton(onClick = { showDeleteHistoryConfirmationDialog = true }) {
-                        Icon(imageVector = Icons.Filled.Delete, contentDescription = "Delete History")
+                        Icon(
+                            imageVector = Icons.Filled.Delete,
+                            contentDescription = "Delete History"
+                        )
                     }
                 }
             )
@@ -125,7 +128,7 @@ fun HistoryScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     contentPadding = PaddingValues(8.dp)
                 ) {
-                    items(historyState.history.size) {index ->
+                    items(historyState.history.size) { index ->
                         HistoryListItem(
                             historyState.history[index],
                             modifier = Modifier.clickable {
@@ -224,10 +227,8 @@ fun HistoryScreenPreview() {
         historyState = HistoryUiState.Loading,
         onBackPressed = {},
         onHistoryItemClicked = { _, _ ->
-
         },
         onHistoryDelete = {
-
         }
     )
 }

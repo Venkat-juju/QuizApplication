@@ -9,7 +9,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.quizapplication.quiz.data.QuizRepository
 import com.example.quizapplication.quiz.util.NZResult
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,7 +16,7 @@ import javax.inject.Inject
 class SubjectsScreenViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val repository: QuizRepository
-): ViewModel() {
+) : ViewModel() {
 
     var state: SubjectsScreenUiState by mutableStateOf(SubjectsScreenUiState.Loading)
         private set
@@ -29,7 +28,7 @@ class SubjectsScreenViewModel @Inject constructor(
     private fun fetchAllSubjects() {
         viewModelScope.launch {
             val subjects = repository.getAllSubjects()
-            state = when(subjects) {
+            state = when (subjects) {
                 is NZResult.Success -> {
                     SubjectsScreenUiState.Success(
                         subjects = subjects.data.map{ it.subjectName }
