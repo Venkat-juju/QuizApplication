@@ -20,13 +20,13 @@ fun InitialIcon(
     modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .clip(RoundedCornerShape(4.dp))
             .background(MaterialTheme.colorScheme.tertiaryContainer),
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = name.substring(0..1).uppercase(),
+            text = name,
             modifier = Modifier
                 .padding(10.dp)
         )
@@ -37,6 +37,6 @@ fun InitialIcon(
 @Composable
 fun InitialIconPreview() {
     QuizApplicationTheme {
-        InitialIcon(name = "Tamil")
+        InitialIcon(name = "1")
     }
 }

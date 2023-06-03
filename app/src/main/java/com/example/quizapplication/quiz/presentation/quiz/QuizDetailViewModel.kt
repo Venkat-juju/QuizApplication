@@ -39,7 +39,7 @@ class QuizDetailViewModel @Inject constructor(
         } else if (type == QuizDetailType.BOOKMARKS) {
             fetchBookmarkedQuestionsFromTopic(ids.split(";").first().toLong())
         } else {
-            fetchTheQuestions(ids.split(";").map { it.toLong() }, 5)
+            fetchTheQuestions(ids.split(";").map { it.toLong() }, numberOfQuestions)
         }
     }
 

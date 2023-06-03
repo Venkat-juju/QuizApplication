@@ -1,0 +1,358 @@
+{
+  "topics": [
+    {
+      "id": 1,
+      "topicName": "தொடரும் தொடர்பும் அறிதல்",
+      "numberOfQuestions": 80,
+      "subjectName": "தமிழ்"
+    },
+    {
+      "id": 2,
+      "topicName": "பிரித்தெழுதுக",
+      "numberOfQuestions": 100,
+      "subjectName": "தமிழ்"
+    },
+    {
+      "id": 3,
+      "topicName": "எதிர்ச் சொல்லைக் கண்டறிதல்",
+      "numberOfQuestions": 50,
+      "subjectName": "தமிழ்"
+    },
+    {
+      "id": 4,
+      "topicName": "தமிழ்மொழியில் அறிவியல்‌ சிந்தனைகள் தொடர்பான செய்திகள் ",
+      "numberOfQuestions": 58,
+      "subjectName": "தமிழ்"
+    },
+    {
+      "id": 5,
+      "topicName": "நாடகக்கலை - இசைக்கலை தொடர்பான செய்திகள்",
+      "numberOfQuestions": 50,
+      "subjectName": "தமிழ்"
+    },
+    {
+      "id": 6,
+      "topicName": "தமிழில் கடித இலக்கியம் - நாட்குறிப்பு . நேரு - காந்தி - மு.வ - அண்ணா - ஆனந்தரங்கம் பிள்ளை நாட்குறிப்பு தொடர்பான செய்திகள் ",
+      "numberOfQuestions": 48,
+      "subjectName": "தமிழ்"
+    },
+    {
+      "id": 7,
+      "topicName": "புதுக் கவிதை - ந.பிச்சமூர்த்தி, சி.சு.செல்லப்பா, தருமு சிவராமு, பசுவய்யா, இரா.மீனாட்சி, சி.மணி, சிற்பி,மு.மேத்தா, ஈரோடு தமிழன்பன், அப்துல் ரகுமான், கலாப்ரியா, கல்யாண்ஜி, ஞானக்கூத்தன், தேவதேவன், சாலை இளந்திரையன், சாலினி இளந்திரையன், ஆலந்தூர் மோகனரங்கன் - தொடர்பான செய்திகள், மேற்கோள்கள், சிறப்புத் தொடர்கள் மற்றும் எழுதிய நூல்கள்",
+      "numberOfQuestions": 64,
+      "subjectName": "தமிழ்"
+    },
+    {
+      "id": 8,
+      "topicName": "மரபுக்கவிதை - முடியரசன், வாணிதாசன், சுரதா, கண்ணதாசன், உடுமலைநாராயணகவி, பட்டுக்கோட்டை கல்யாணசுந்தரம், மருதகாசி தொடர்பான செய்திகள், அடைமொழிபெயர்கள்",
+      "numberOfQuestions": 64,
+      "subjectName": "தமிழ்"
+    },
+    {
+      "id": 9,
+      "topicName": "பாரதியார், பாரதிதாசன், நாமக்கல் கவிஞர், கவிமணி தேசிக விநாயகம் பிள்ளை தொடர்பான செய்திகள், சிறந்த தொடர்கள், சிறப்புப் பெயர்கள் ",
+      "numberOfQuestions": 90,
+      "subjectName": "தமிழ்"
+    },
+    {
+      "id": 10,
+      "topicName": "காப்பியங்கள்",
+      "numberOfQuestions": 50,
+      "subjectName": "தமிழ்"
+    },
+    {
+      "id": 11,
+      "topicName": "எட்டுத்தொகை - பத்துப்பாட்டு ",
+      "numberOfQuestions": 90,
+      "subjectName": "தமிழ்"
+    },
+    {
+      "id": 12,
+      "topicName": "கம்பராமாயணம் ",
+      "numberOfQuestions": 40,
+      "subjectName": "தமிழ்"
+    },
+    {
+      "id": 13,
+      "topicName": "பதினெண்கீழ்க்கணக்கு நூல்கள்",
+      "numberOfQuestions": 79,
+      "subjectName": "தமிழ்"
+    },
+    {
+      "id": 14,
+      "topicName": "திருக்குறள் ",
+      "numberOfQuestions": 56,
+      "subjectName": "தமிழ்"
+    },
+    {
+      "id": 15,
+      "topicName": "பிழை திருத்தம் (அ) சந்திப்பிழையை நீக்குதல் (அ) ஒருமை பன்மை பிழைகளை நீக்குதல் (அ) மரபுப் பிழைகள், வழுவுச் சொற்களை நீக்குதல், பிறமொழிச் சொற்களை நீக்குதல்",
+      "numberOfQuestions": 10,
+      "subjectName": "தமிழ்"
+    },
+    {
+      "id": 16,
+      "topicName": "பொருந்தாதச் சொல்லைக் கண்டறிதல்",
+      "numberOfQuestions": 70,
+      "subjectName": "தமிழ்"
+    },
+    {
+      "id": 17,
+      "topicName": "அளவீடுகள்",
+      "numberOfQuestions": 16,
+      "subjectName": "அறிவியல்"
+    },
+    {
+      "id": 18,
+      "topicName": "விசையும் இயக்கமும்",
+      "numberOfQuestions": 18,
+      "subjectName": "அறிவியல்"
+    },
+    {
+      "id": 19,
+      "topicName": "நம்மைச்சுற்றியுள்ள பருப்பொருள்கள்",
+      "numberOfQuestions": 28,
+      "subjectName": "அறிவியல்"
+    },
+    {
+      "id": 20,
+      "topicName": "தாவரங்கள் வாழும் உலகம்",
+      "numberOfQuestions": 32,
+      "subjectName": "அறிவியல்"
+    },
+    {
+      "id": 21,
+      "topicName": "அளவீட்டியல்",
+      "numberOfQuestions": 35,
+      "subjectName": "அறிவியல்"
+    },
+    {
+      "id": 22,
+      "topicName": "விசையும் இயக்கமும்",
+      "numberOfQuestions": 22,
+      "subjectName": "அறிவியல்"
+    },
+    {
+      "id": 23,
+      "topicName": "நம்மைச்சுற்றியுள்ள பருப்பொருள்கள்",
+      "numberOfQuestions": 62,
+      "subjectName": "அறிவியல்"
+    },
+    {
+      "id": 24,
+      "topicName": "அணு அமைப்பு",
+      "numberOfQuestions": 30,
+      "subjectName": "அறிவியல்"
+    },
+    {
+      "id": 25,
+      "topicName": "அளவீட்டியல்",
+      "numberOfQuestions": 73,
+      "subjectName": "அறிவியல்"
+    },
+    {
+      "id": 26,
+      "topicName": "விசையும் அழுத்தமும்",
+      "numberOfQuestions": 61,
+      "subjectName": "அறிவியல்"
+    },
+    {
+      "id": 27,
+      "topicName": "அளவீடு",
+      "numberOfQuestions": 85,
+      "subjectName": "அறிவியல்"
+    },
+    {
+      "id": 28,
+      "topicName": "இயக்கம் ",
+      "numberOfQuestions": 41,
+      "subjectName": "அறிவியல்"
+    },
+    {
+      "id": 29,
+      "topicName": "இயக்கவியல்",
+      "numberOfQuestions": 75,
+      "subjectName": "அறிவியல்"
+    },
+    {
+      "id": 30,
+      "topicName": "ஒளியியல்",
+      "numberOfQuestions": 107,
+      "subjectName": "அறிவியல்"
+    },
+    {
+      "id": 31,
+      "topicName": "இயல் உலகத்தின் தன்மையும் அளவீட்டியலும்",
+      "numberOfQuestions": 101,
+      "subjectName": "அறிவியல்"
+    },
+    {
+      "id": 32,
+      "topicName": "இயற்பியலின் அண்மைக்கால வளர்ச்சிகள்",
+      "numberOfQuestions": 60,
+      "subjectName": "அறிவியல்"
+    },
+    {
+      "id": 33,
+      "topicName": "அணு மற்றும் அணுக்கரு இயற்பியல்",
+      "numberOfQuestions": 99,
+      "subjectName": "அறிவியல்"
+    },
+    {
+      "id": 34,
+      "topicName": "வரலாறு என்றால் என்ன?",
+      "numberOfQuestions": 26,
+      "subjectName": "சமூக அறிவியல்"
+    },
+    {
+      "id": 35,
+      "topicName": "மனிதர்களின் பரிமாண வளர்ச்சி",
+      "numberOfQuestions": 30,
+      "subjectName": "சமூக அறிவியல்"
+    },
+    {
+      "id": 36,
+      "topicName": "சிந்துவெளி நாகரிகம் ",
+      "numberOfQuestions": 40,
+      "subjectName": "சமூக அறிவியல்"
+    },
+    {
+      "id": 37,
+      "topicName": "தென்னிந்தியப் புதிய அரசுகள்: பிற்காலச் சோழர்களும், பாண்டியர்களும்",
+      "numberOfQuestions": 58,
+      "subjectName": "சமூக அறிவியல்"
+    },
+    {
+      "id": 38,
+      "topicName": "டெல்லி சுல்தான்கள்",
+      "numberOfQuestions": 35,
+      "subjectName": "சமூக அறிவியல்"
+    },
+    {
+      "id": 39,
+      "topicName": "விஜயநகர், பாமினி அரசுகள்",
+      "numberOfQuestions": 75,
+      "subjectName": "சமூக அறிவியல்"
+    },
+    {
+      "id": 40,
+      "topicName": "முகலாயப் பேரரசு ",
+      "numberOfQuestions": 93,
+      "subjectName": "சமூக அறிவியல்"
+    },
+    {
+      "id": 41,
+      "topicName": "ஐரோப்பியர்களின் வருகை ",
+      "numberOfQuestions": 79,
+      "subjectName": "சமூக அறிவியல்"
+    },
+    {
+      "id": 42,
+      "topicName": "வர்த்தகத்திலிருந்து பேரரசு வரை",
+      "numberOfQuestions": 67,
+      "subjectName": "சமூக அறிவியல்"
+    },
+    {
+      "id": 43,
+      "topicName": "மனிதப் பரிணாம வளர்ச்சியும் சமூகமும், வரலாற்றுக்கு முந்தைய காலம்",
+      "numberOfQuestions": 116,
+      "subjectName": "சமூக அறிவியல்"
+    },
+    {
+      "id": 44,
+      "topicName": "பண்டைய நாகரிகங்கள் - சிந்துவெளி நாகரிகம் ",
+      "numberOfQuestions": 45,
+      "subjectName": "சமூக அறிவியல்"
+    },
+    {
+      "id": 45,
+      "topicName": "தொடக்கக்காலத் தமிழ் சமூகமும் பண்பாடும்",
+      "numberOfQuestions": 80,
+      "subjectName": "சமூக அறிவியல்"
+    },
+    {
+      "id": 46,
+      "topicName": "19ம் நூற்றாண்டில் சமூக சமய சீர்த்திருத்த இயக்கங்கள் ",
+      "numberOfQuestions": 90,
+      "subjectName": "சமூக அறிவியல்"
+    },
+    {
+      "id": 47,
+      "topicName": "ஆங்கிலேய ஆட்சிக்கு எதிராக தமிழகத்தில் நிகழ்ந்த தொடக்ககால கிளர்ச்சிகள் ",
+      "numberOfQuestions": 98,
+      "subjectName": "சமூக அறிவியல்"
+    },
+    {
+      "id": 48,
+      "topicName": "இந்திய அரசியல்",
+      "numberOfQuestions": 10,
+      "subjectName": "பொது அறிவு"
+    },
+    {
+      "id": 49,
+      "topicName": "இந்திய பொருளாதாரம்",
+      "numberOfQuestions": 11,
+      "subjectName": "பொது அறிவு"
+    },
+    {
+      "id": 50,
+      "topicName": "இந்திய அரசியலமைப்பு ",
+      "numberOfQuestions": 85,
+      "subjectName": "பொது அறிவு"
+    },
+    {
+      "id": 51,
+      "topicName": "இந்திய அரசியல்",
+      "numberOfQuestions": 254,
+      "subjectName": "பொது அறிவு"
+    },
+    {
+      "id": 52,
+      "topicName": "மத்திய, மாநில மற்றும் யூனியன் பிரதேசங்கள் ",
+      "numberOfQuestions": 51,
+      "subjectName": "பொது அறிவு"
+    },
+    {
+      "id": 53,
+      "topicName": "குடியுரிமை",
+      "numberOfQuestions": 27,
+      "subjectName": "பொது அறிவு"
+    },
+    {
+      "id": 54,
+      "topicName": "அடிப்படை உரிமைகள்",
+      "numberOfQuestions": 15,
+      "subjectName": "பொது அறிவு"
+    },
+    {
+      "id": 55,
+      "topicName": "அடிப்படை கடமைகள்",
+      "numberOfQuestions": 5,
+      "subjectName": "பொது அறிவு"
+    },
+    {
+      "id": 56,
+      "topicName": "ஒன்றிய நிர்வாகம்",
+      "numberOfQuestions": 121,
+      "subjectName": "பொது அறிவு"
+    },
+    {
+      "id": 57,
+      "topicName": "ஒன்றிய நாடாளுமன்றம்",
+      "numberOfQuestions": 20,
+      "subjectName": "பொது அறிவு"
+    },
+    {
+      "id": 58,
+      "topicName": "மாநில நிர்வாகம் ",
+      "numberOfQuestions": 45,
+      "subjectName": "பொது அறிவு"
+    },
+    {
+      "id": 59,
+      "topicName": "மாநில சட்டமன்றம்",
+      "numberOfQuestions": 26,
+      "subjectName": "பொது அறிவு"
+    }
+  ]
+}

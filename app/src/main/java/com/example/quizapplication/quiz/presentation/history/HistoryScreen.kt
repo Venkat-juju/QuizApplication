@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -33,9 +34,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.quizapplication.R
 import com.example.quizapplication.quiz.presentation.compoenents.InitialIcon
 import com.example.quizapplication.quiz.presentation.quiz.AlertDialog
 import com.example.quizapplication.ui.theme.QuizApplicationTheme
@@ -54,10 +57,10 @@ fun HistoryScreen(
 
     if (showDeleteHistoryConfirmationDialog) {
         AlertDialog(
-            title = "Confirm Delete?",
-            message = "Are you sure to delete all the history?",
-            positiveButtonText = "Confirm",
-            negativeButtonText = "Cancel",
+            title = stringResource(id = R.string.confirm_delete),
+            message = stringResource(id = R.string.confirm_delete_history_msg),
+            positiveButtonText = stringResource(id = R.string.confirm),
+            negativeButtonText = stringResource(id = R.string.cancel),
             onPositiveButtonClicked = {
                 showDeleteHistoryConfirmationDialog = false
                 onHistoryDelete()
@@ -71,7 +74,7 @@ fun HistoryScreen(
             LargeTopAppBar(
                 title = {
                     Text(
-                        text = "History",
+                        text = stringResource(id = R.string.history),
                         style = if (scrollBehavior.state.collapsedFraction < 0.5) {
                             MaterialTheme.typography.displayMedium
                         } else {
@@ -85,7 +88,7 @@ fun HistoryScreen(
                     IconButton(onClick = onBackPressed) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = "Press Back"
+                            contentDescription = stringResource(id = R.string.back_press)
                         )
                     }
                 },
@@ -101,7 +104,7 @@ fun HistoryScreen(
                     IconButton(onClick = { showDeleteHistoryConfirmationDialog = true }) {
                         Icon(
                             imageVector = Icons.Filled.Delete,
-                            contentDescription = "Delete History"
+                            contentDescription = stringResource(id = R.string.delete_history)
                         )
                     }
                 }
@@ -130,6 +133,7 @@ fun HistoryScreen(
                 ) {
                     items(historyState.history.size) { index ->
                         HistoryListItem(
+                            itemIndex=index+1,
                             historyState.history[index],
                             modifier = Modifier.clickable {
                                 onHistoryItemClicked(
@@ -146,14 +150,14 @@ fun HistoryScreen(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    Text(text = "No Data")
+                    Text(text = stringResource(id = R.string.no_data))
                 }
             }
             HistoryUiState.Error -> {
                 Box(
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = "Error")
+                    Text(text = stringResource(id = R.string.something_went_wrong))
                 }
             }
         }
@@ -162,6 +166,7 @@ fun HistoryScreen(
 
 @Composable
 fun HistoryListItem(
+    itemIndex: Int,
     historyItem: QuizHistory,
     modifier: Modifier = Modifier
 ) {
@@ -173,17 +178,20 @@ fun HistoryListItem(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier.padding(16.dp)
         ) {
-            InitialIcon(name = historyItem.historyTitle)
+            InitialIcon(
+                name = "$itemIndex",
+                modifier = Modifier.size(40.dp)
+            )
             Column {
                 Text(historyItem.historyTitle, style = MaterialTheme.typography.titleMedium)
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(12.dp),
                     modifier = Modifier.padding(top = 24.dp)
                 ) {
-                    Stat("Total", historyItem.totalQuestions)
-                    Stat("Correct", historyItem.correctAnswers)
-                    Stat("Wrong", historyItem.wrongAnswers)
-                    Stat("Skipped", historyItem.skippedAnswer)
+                    Stat(stringResource(id = R.string.total), historyItem.totalQuestions)
+                    Stat(stringResource(id = R.string.correct), historyItem.correctAnswers)
+                    Stat(stringResource(id = R.string.wrong), historyItem.wrongAnswers)
+                    Stat(stringResource(id = R.string.skipped), historyItem.skippedAnswer)
                 }
             }
         }
@@ -208,6 +216,7 @@ fun Stat(
 fun HistoryItemPreview() {
     QuizApplicationTheme {
         HistoryListItem(
+            itemIndex = 1,
             historyItem = QuizHistory(
                 historyId = 123L,
                 historyTitle = "title",

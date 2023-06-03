@@ -36,18 +36,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.quizapplication.R
 import com.example.quizapplication.quiz.domain.model.Topic
 import com.example.quizapplication.quiz.presentation.quiz.QuizDetailType
 import com.example.quizapplication.ui.theme.QuizApplicationTheme
 import com.google.accompanist.flowlayout.FlowRow
-
-data class QuizConfig(
-    val topics: List<String>,
-    val type: QuizDetailType,
-    val numberOfQuestions: Int
-)
 
 @Composable
 fun QuizConfigDialog(
@@ -55,7 +51,6 @@ fun QuizConfigDialog(
     totalQuestions: Int,
     onStart: (type: QuizDetailType, numberOfQuestions: Int, topics: List<Topic>) -> Unit,
     onCancel: () -> Unit,
-    modifier: Modifier = Modifier
 ) {
 
     val context = LocalContext.current
@@ -75,7 +70,7 @@ fun QuizConfigDialog(
                     onStart(QuizDetailType.values()[type], numberOfQuestions, topics)
                 }
             ) {
-                Text("Start")
+                Text(stringResource(id = R.string.start))
             }
          },
         dismissButton = {
@@ -84,13 +79,13 @@ fun QuizConfigDialog(
                     onCancel()
                 }
             ) {
-                Text(text = "Cancel")
+                Text(text = stringResource(id = R.string.cancel))
             }
         },
         text = {
             Column {
                 Text(
-                    text = "Mode",
+                    text = stringResource(id = R.string.mode),
                     style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
@@ -103,16 +98,16 @@ fun QuizConfigDialog(
                     divider = {}
                 ) {
                     QuizTypeTab(
-                        title = "Practice",
+                        title = stringResource(id = R.string.practice),
                         onClick = { type = QuizDetailType.PRACTICE.ordinal }
                     )
                     QuizTypeTab(
-                        title = "Test",
+                        title = stringResource(id = R.string.test),
                         onClick = { type = QuizDetailType.TEST.ordinal }
                     )
                 }
                 Text(
-                    text = "Topics",
+                    text = stringResource(id = R.string.topics),
                     style = MaterialTheme.typography.titleLarge,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
@@ -123,7 +118,7 @@ fun QuizConfigDialog(
                         .fillMaxWidth()
                         .padding(top = 16.dp, bottom = 4.dp)
                 ) {
-                    Text(text = "Number of questions:", style = MaterialTheme.typography.titleLarge)
+                    Text(text = stringResource(id = R.string.number_of_question), style = MaterialTheme.typography.titleLarge)
                     Text(text = numberOfQuestions.toString(), style = MaterialTheme.typography.titleLarge)
                 }
                 Slider(

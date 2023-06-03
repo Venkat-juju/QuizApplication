@@ -133,6 +133,7 @@ fun TopicsScreen(
                 ) {
                     items(state.topics.size) { topicIndex ->
                         TopicItem(
+                            topicIndex = topicIndex,
                             topic = state.topics[topicIndex],
                             type = state.type,
                             modifier = Modifier
@@ -167,6 +168,7 @@ fun TopicsScreen(
 
 @Composable
 fun TopicItem(
+    topicIndex: Int,
     topic: Topic,
     type: TopicScreenType,
     modifier: Modifier = Modifier
@@ -180,7 +182,7 @@ fun TopicItem(
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            InitialIcon(name = topic.topicName)
+            InitialIcon(name = "${topicIndex + 1}", modifier = Modifier.size(40.dp))
             Column(
                 modifier = Modifier.padding(start = 16.dp)
             ) {
@@ -245,6 +247,7 @@ fun NoDataScreenPreview() {
 fun TopicItemPreview() {
     QuizApplicationTheme {
         TopicItem(
+            topicIndex = 1,
             topic = Topic(
                 topicId = 1L,
                 topicName = "Sample Topic",

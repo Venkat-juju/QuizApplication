@@ -1,3 +1,46 @@
 <resources>
     <string name="app_name">Nezy</string>
+    <string name="confirm_to_exit">Confirm to exit</string>
+    <string name="are_you_sure_to_exit">Are you sure to exit?</string>
+    <string name="leave">Leave</string>
+    <string name="no_stay">No, Stay</string>
+    <string name="submit">Submit</string>
+    <string name="confirm_submit">Confirm Submit</string>
+    <string name="confirm_submit_the_test_message">Do you want to really submit the test?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="submitting">Submitting…</string>
+    <string name="hide_explanation">Hide Explanation</string>
+    <string name="show_explanation">Show Explanation</string>
+    <string name="no_explanation_avl_error_msg">Sorry! No explanation available</string>
+    <string name="confirm">Confirm</string>
+    <string name="confirm_msg">Do you confirm?</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="loading">Loading…</string>
+    <string name="total">Total</string>
+    <string name="correct">Correct</string>
+    <string name="wrong">Wrong</string>
+    <string name="skipped">Skipped</string>
+    <string name="confirm_delete">Confirm Delete?</string>
+    <string name="confirm_delete_history_msg">Are you sure to delete all the history?</string>
+    <string name="history">History</string>
+    <string name="no_data">No Data</string>
+    <string name="something_went_wrong">Something went wrong!</string>
+    <string name="subject">Subject</string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="start">Start</string>
+    <string name="number_of_question">Number of questions:</string>
+<!--    <string name="number_of_questions_cant_be_zero">Number of questions can't be 0</string>-->
+    <string name="mode">Mode</string>
+    <string name="practice">Practice</string>
+    <string name="test">Test</string>
+    <string name="topics">Topics</string>
+
+    <!-- content description -->
+    <string name="back_press">Back press</string>
+    <string name="bookmark">Bookmark</string>
+    <string name="correct_answer">correct answer</string>
+    <string name="wrong_answer">wrong answer</string>
+    <string name="delete_history">Delete History</string>
 </resources>

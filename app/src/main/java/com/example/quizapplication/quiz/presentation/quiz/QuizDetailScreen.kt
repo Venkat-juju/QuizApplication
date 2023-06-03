@@ -31,7 +31,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -60,6 +59,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -76,7 +76,6 @@ fun QuizDetailScreen(
     onSubmit: () -> Unit,
     onSubmitted: (Int, Int, Int, Long) -> Unit,
     onBackClicked: () -> Unit,
-    modifier: Modifier = Modifier
 ) {
 
     var showSubmitDialog by rememberSaveable { mutableStateOf(false) }
@@ -107,10 +106,10 @@ fun QuizDetailScreen(
 
     if (showExitConfirmationDialog) {
         AlertDialog(
-            title = "Confirm Exit",
-            message = "Are you sure to exit?",
-            positiveButtonText = "Leave",
-            negativeButtonText = "No, Stay",
+            title = stringResource(id = R.string.confirm_to_exit),
+            message = stringResource(id = R.string.are_you_sure_to_exit),
+            positiveButtonText = stringResource(id = R.string.leave),
+            negativeButtonText = stringResource(id = R.string.no_stay),
             onPositiveButtonClicked = {
                 showExitConfirmationDialog = false
                 onBackClicked()
@@ -145,7 +144,7 @@ fun QuizDetailScreen(
                             }
                         }
                     ) {
-                        Icon(Icons.Default.ArrowBack, "Back press")
+                        Icon(Icons.Default.ArrowBack, stringResource(id = R.string.back_press))
                     }
                 },
                 actions = {
@@ -159,7 +158,7 @@ fun QuizDetailScreen(
                             },
                             enabled = state is QuizDetailScreenState.Success
                         ) {
-                            Text("Submit")
+                            Text(stringResource(id = R.string.submit))
                         }
                     }
                 }
@@ -182,10 +181,10 @@ fun QuizDetailScreen(
                 is QuizDetailScreenState.Success -> {
                     if (showSubmitDialog) {
                         AlertDialog(
-                            title = "Confirm Submit",
-                            message = "Do you want to really submit the test?",
-                            positiveButtonText = "Yes",
-                            negativeButtonText = "No",
+                            title = stringResource(id = R.string.submit),
+                            message = stringResource(id = R.string.confirm_submit_the_test_message),
+                            positiveButtonText = stringResource(id = R.string.yes),
+                            negativeButtonText = stringResource(id = R.string.no),
                             onPositiveButtonClicked = {
                                 showSubmitDialog = false
                                 showSubmitLoader = true
@@ -197,15 +196,18 @@ fun QuizDetailScreen(
                         )
                     }
                     if (showSubmitLoader) {
-                        LoadingDialog(loadingMessage = "Submitting...")
+                        LoadingDialog(loadingMessage = stringResource(id = R.string.loading))
                     }
-                    NZLinearProgressIndicator(
-                        indicatorProgress = (state.questions.filter { it.selectedOption != null }.size.toFloat() / state.questions.size)
-                    )
+                    if (state.type != QuizDetailType.RESULT_DETAIL && state.type != QuizDetailType.BOOKMARKS) {
+                        NZLinearProgressIndicator(
+                            indicatorProgress = (state.questions.filter { it.selectedOption != null }.size.toFloat() / state.questions.size)
+                        )
+                    }
                     LazyColumn(
                         verticalArrangement = Arrangement.spacedBy(space = 8.dp),
-                        modifier = Modifier.padding(horizontal = 8.dp),
-                        contentPadding = PaddingValues(vertical = 16.dp)
+                        contentPadding = PaddingValues(vertical = 16.dp),
+                        modifier = Modifier
+                            .padding(horizontal = 8.dp)
                     ) {
                         itemsIndexed(
                             items = state.questions,
@@ -246,14 +248,14 @@ fun QuestionDetail(
     questionIndex: Int,
     question: String,
     options: List<String>,
-    isBookmarked: Boolean = false,
     selectedOption: String?,
     correctAnswer: String,
     explanation: String?,
     type: QuizDetailType,
     onOptionSelected: (String) -> Unit,
     onBookmarkButtonClicked: (Int) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isBookmarked: Boolean = false
 ) {
     var showExplanation: Boolean by rememberSaveable { mutableStateOf(false) }
 
@@ -278,7 +280,7 @@ fun QuestionDetail(
                     AnimatedContent(
                         targetState = isBookmarked,
                         transitionSpec = { scaleIn() with scaleOut() },
-                        label = ""
+                        label = stringResource(id = R.string.submitting)
                     ) {
                         IconButton(onClick = { onBookmarkButtonClicked(questionIndex) }) {
                             Icon(
@@ -286,7 +288,7 @@ fun QuestionDetail(
                                     id = if (isBookmarked)R.drawable.ic_bookmark_filled
                                         else R.drawable.ic_bookmark_outlined
                                 ),
-                                contentDescription = "Bookmark"
+                                contentDescription = stringResource(id = R.string.bookmark)
                             )
                         }
                     }
@@ -323,7 +325,7 @@ fun QuestionDetail(
                         .selectable(optionStr == selectedOption) {
                             onOptionSelected(optionStr)
                         }
-                        .background (
+                        .background(
                             color = if (type == QuizDetailType.TEST && selectedOption == optionStr)
                                 Color.Blue.copy(alpha = 0.1f)
                             else if (
@@ -354,7 +356,7 @@ fun QuestionDetail(
                     ) {
                         Icon(
                             Icons.Default.Check,
-                            "correct answer",
+                            stringResource(id = R.string.correct_answer),
                             tint = Color.Green,
                             modifier = Modifier.padding(end = 8.dp)
                         )
@@ -364,7 +366,7 @@ fun QuestionDetail(
                     ) {
                         Icon(
                             Icons.Default.Clear,
-                            "wrong answer",
+                            stringResource(id = R.string.wrong_answer),
                             tint = Color.Red,
                             modifier = Modifier.padding(end = 8.dp)
                         )
@@ -394,14 +396,16 @@ fun QuestionDetail(
               )
                 Column {
                     Text(
-                        text = if (showExplanation) "Hide Explanation" else "Show Explanation",
+                        text = if (showExplanation) stringResource(id = R.string.hide_explanation) else stringResource(
+                            id = R.string.show_explanation
+                        ),
                         modifier = Modifier
                             .clickable { showExplanation = !showExplanation }
                             .padding(12.dp)
                     )
                     AnimatedVisibility(visible = showExplanation) {
                         Text(
-                            text = if (explanation.isNullOrBlank()) "Sorry! No explanation available" else explanation,
+                            text = if (explanation.isNullOrBlank()) stringResource(id = R.string.no_explanation_avl_error_msg) else explanation,
                             modifier = Modifier.padding(start = 12.dp, end = 12.dp, bottom = 12.dp)
                         )
                     }
@@ -482,10 +486,10 @@ fun NZLinearProgressIndicator(indicatorProgress: Float) {
 fun ConfirmDialogPreview() {
     QuizApplicationTheme {
         AlertDialog(
-            title = "Confirm",
-            message = "Do you confirm?",
-            positiveButtonText = "Ok",
-            negativeButtonText = "Cancel",
+            title = stringResource(id = R.string.confirm),
+            message = stringResource(id = R.string.confirm_msg),
+            positiveButtonText = stringResource(id = R.string.ok),
+            negativeButtonText = stringResource(id = R.string.cancel),
             onPositiveButtonClicked = { /*TODO*/ }) {
 
         }
@@ -496,7 +500,7 @@ fun ConfirmDialogPreview() {
 @Composable
 fun LoadingDialogPreview() {
     QuizApplicationTheme {
-        LoadingDialog(loadingMessage = "Loading...")
+        LoadingDialog(loadingMessage = stringResource(id = R.string.loading))
     }
 }
 
