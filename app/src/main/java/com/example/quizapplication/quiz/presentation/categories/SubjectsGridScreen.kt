@@ -31,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -39,7 +40,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.quizapplication.R
-import com.example.quizapplication.quiz.presentation.compoenents.InitialIcon
 import com.example.quizapplication.ui.theme.QuizApplicationTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -151,8 +151,10 @@ fun SubjectsGrid(
                             horizontalArrangement = Arrangement.Center
                         ) {
                             Icon(
-                                painter = painterResource(id = R.drawable.ic_bookmark_outlined),
-                                contentDescription = ""
+                                painter = painterResource(id = R.drawable.ic_bookmark_colored),
+                                contentDescription = "",
+                                modifier = Modifier.size(30.dp),
+                                tint = Color.Unspecified
                             )
                             Text(
                                 stringResource(id = R.string.bookmarks),
@@ -178,9 +180,10 @@ fun SubjectsGrid(
                             horizontalArrangement = Arrangement.Center
                         ) {
                             Icon(
-                                painter = painterResource(id = R.drawable.ic_history),
+                                painter = painterResource(id = R.drawable.ic_history_colored),
                                 contentDescription = "History Icon",
-                                modifier = Modifier.padding(start = 12.dp)
+                                modifier = Modifier.padding(start = 12.dp),
+                                tint = Color.Unspecified
                             )
                             Text(
                                 text = stringResource(id = R.string.history),
@@ -205,7 +208,18 @@ fun SubjectsGrid(
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        InitialIcon(name = "$index", modifier = Modifier.size(40.dp))
+                        Icon(
+                            painter = painterResource(id =
+                                when {
+                                    state.subjects[index-1] == "தமிழ்" -> R.drawable.ic_tamil_logo
+                                    state.subjects[index-1] == "அறிவியல்" -> R.drawable.ic_science_logo
+                                    state.subjects[index-1] == "சமூக அறிவியல்" -> R.drawable.ic_social_science_logo
+                                    else -> R.drawable.ic_gk_logo
+                                }
+                            ),
+                            contentDescription = "History Icon",
+                            tint = Color.Unspecified
+                        )
                         Text(
                             text = state.subjects[index - 1],
                             modifier = Modifier
