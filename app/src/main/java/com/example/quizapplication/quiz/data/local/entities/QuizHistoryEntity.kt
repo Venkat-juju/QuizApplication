@@ -8,6 +8,7 @@ data class QuizHistoryEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val historyId: Long = 0L,
+    val historyTitle: String = "",
     val questionId: Long,
     val selectedOptionIndex: Int,
 )

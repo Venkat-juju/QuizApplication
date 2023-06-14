@@ -9,4 +9,6 @@ interface QuizRemoteDataSource {
     suspend fun getAllTopics(): NZResult<List<RemoteTopic>>
 
     suspend fun getQuestionsByTopic(topicId: List<Long>, limit: Int): NZResult<List<Question>>
+
+    suspend fun getRandomQuestions(numberOfQuestions: Int): NZResult<List<Question>>
 }

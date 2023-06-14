@@ -7,18 +7,22 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.quizapplication.quiz.data.QuizRepository
+import com.example.quizapplication.quiz.data.datastore.QuizDataStore
 import com.example.quizapplication.quiz.data.remote.mappers.toQuestion
 import com.example.quizapplication.quiz.domain.model.Question
 import com.example.quizapplication.quiz.util.NZResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Calendar
 import javax.inject.Inject
 
 @HiltViewModel
 class QuizDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val quizRepository: QuizRepository
+    private val quizRepository: QuizRepository,
+    private val quizDataStore: QuizDataStore
 ) : ViewModel() {
 
     private val type: QuizDetailType = QuizDetailType.values()[checkNotNull(savedStateHandle["type"])]
@@ -28,7 +32,7 @@ class QuizDetailViewModel @Inject constructor(
 
     var state: QuizDetailScreenState by mutableStateOf(
         QuizDetailScreenState.Loading(
-            title = if (topics.isBlank()) "Quiz Result" else topics.split(";").joinToString(","),
+            title = if (type == QuizDetailType.RESULT_DETAIL) "Quiz Result" else if(topics.isBlank()) "Daily quiz" else topics.split(";").joinToString(","),
             quizType = type
         )
     )
@@ -39,7 +43,7 @@ class QuizDetailViewModel @Inject constructor(
         } else if (type == QuizDetailType.BOOKMARKS) {
             fetchBookmarkedQuestionsFromTopic(ids.split(";").first().toLong())
         } else {
-            fetchTheQuestions(ids.split(";").map { it.toLong() }, numberOfQuestions)
+            fetchTheQuestions(ids.split(";").filter { it.isNotBlank() }.map { it.toLong() }, numberOfQuestions)
         }
     }
 
@@ -157,8 +161,14 @@ class QuizDetailViewModel @Inject constructor(
     private fun submitTheQuiz() {
         viewModelScope.launch {
             if (state is QuizDetailScreenState.Success) {
-                val saveHistoryResponse = quizRepository.saveQuizHistory((state as QuizDetailScreenState.Success).questions.map(UiQuestion::toQuestion))
+                val saveHistoryResponse = quizRepository.saveQuizHistory((state as QuizDetailScreenState.Success).title, (state as QuizDetailScreenState.Success).questions.map(UiQuestion::toQuestion))
+                if (isDailyQuiz()) {
+                    val timeNow = Calendar.getInstance().time
+                    val formatter = SimpleDateFormat("dd")
+                    val todayDate = formatter.format(timeNow).toInt()
 
+                    quizDataStore.updateDailyQuizAttendedDate(todayDate)
+                }
                 state = when(saveHistoryResponse) {
                     is NZResult.Success -> {
                         (state as QuizDetailScreenState.Success).copy(isSubmitting = true, historyId = saveHistoryResponse.data)
@@ -277,5 +287,9 @@ class QuizDetailViewModel @Inject constructor(
                 quizType = type
             )*/
         }
+    }
+
+    private fun isDailyQuiz(): Boolean {
+        return topics.isBlank()
     }
 }

@@ -16,6 +16,9 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
@@ -49,6 +52,7 @@ fun SubjectsScreen(
     onSubjectSelected: (String) -> Unit,
     onBookmarksClicked: () -> Unit,
     onHistoryClicked: () -> Unit,
+    onStartDailyQuiz: () -> Unit,
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
@@ -95,6 +99,7 @@ fun SubjectsScreen(
                     onBookmarksClicked = onBookmarksClicked,
                     onHistoryClicked = onHistoryClicked,
                     onSubjectSelected = onSubjectSelected,
+                    onStartDailyQuiz = onStartDailyQuiz,
                     modifier = Modifier.padding(innerPadding)
                 )
             }
@@ -109,6 +114,7 @@ fun SubjectsGrid(
     onBookmarksClicked: () -> Unit,
     onHistoryClicked: () -> Unit,
     onSubjectSelected: (String) -> Unit,
+    onStartDailyQuiz: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyVerticalGrid(
@@ -119,13 +125,13 @@ fun SubjectsGrid(
     ) {
         items(
             span = { index ->
-                if (index == 0 ) {
+                if (index <= 1) {
                     GridItemSpan(maxLineSpan)
                 } else {
                     GridItemSpan(1)
                 }
             },
-            count = state.subjects.size + 1
+            count = state.subjects.size + 2
         ) { index ->
             if (index == 0) {
                 ElevatedCard(
@@ -194,6 +200,12 @@ fun SubjectsGrid(
                         }
                     }
                 }
+            } else if (index == 1) {
+                DailyQuizCard(
+                    onStart = onStartDailyQuiz,
+                    isCompleted = state.isDailyQuizCompleted,
+                    modifier = Modifier.padding(vertical = 4.dp)
+                )
             } else {
                 ElevatedCard(
                     modifier = Modifier
@@ -211,9 +223,9 @@ fun SubjectsGrid(
                         Icon(
                             painter = painterResource(id =
                                 when {
-                                    state.subjects[index-1] == "தமிழ்" -> R.drawable.ic_tamil_logo
-                                    state.subjects[index-1] == "அறிவியல்" -> R.drawable.ic_science_logo
-                                    state.subjects[index-1] == "சமூக அறிவியல்" -> R.drawable.ic_social_science_logo
+                                    state.subjects[index-2] == "தமிழ்" -> R.drawable.ic_tamil_logo
+                                    state.subjects[index-2] == "அறிவியல்" -> R.drawable.ic_science_logo
+                                    state.subjects[index-2] == "சமூக அறிவியல்" -> R.drawable.ic_social_science_logo
                                     else -> R.drawable.ic_gk_logo
                                 }
                             ),
@@ -221,7 +233,7 @@ fun SubjectsGrid(
                             tint = Color.Unspecified
                         )
                         Text(
-                            text = state.subjects[index - 1],
+                            text = state.subjects[index - 2],
                             modifier = Modifier
                                 .padding(top = 10.dp),
                             style = MaterialTheme.typography.titleMedium
@@ -233,17 +245,95 @@ fun SubjectsGrid(
     }
 }
 
+@Composable
+fun DailyQuizCard(
+    onStart: () -> Unit,
+    isCompleted: Boolean,
+    modifier: Modifier = Modifier
+) {
+    ElevatedCard(
+        modifier = modifier
+            .fillMaxWidth()
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 12.dp)
+                .padding(start = 12.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(top = 16.dp)
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_test),
+                    contentDescription = "Daily quiz logo",
+                    tint = Color.Unspecified
+                )
+            }
+            Column(
+                verticalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(12.dp)
+            ) {
+                Column {
+                    Text(
+                        text = stringResource(id = R.string.daily_quiz_title),
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
+                    Text(text = stringResource(id = R.string.daily_quiz_number_of_questions))
+                }
+                Row(
+                    horizontalArrangement = Arrangement.End,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    if (!isCompleted) {
+                        Button(onClick = onStart) {
+                            Text(stringResource(id = R.string.start))
+                        }
+                    } else {
+                        Icon(
+                            imageVector = Icons.Filled.Check,
+                            tint = Color.Green,
+                            contentDescription = stringResource(id = R.string.completed_check_mark),
+                            modifier = Modifier.padding(vertical = 8.dp)
+                        )
+                        Text(
+                            text = stringResource(id = R.string.completed_with_exclamatory),
+                            modifier = Modifier.padding(vertical = 8.dp)
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Preview
+@Composable
+fun DailyQuizCardPreview() {
+    QuizApplicationTheme {
+        DailyQuizCard(
+            onStart = {},
+            isCompleted = true
+        )
+    }
+}
+
 @Preview
 @Composable
 fun SubjectsScreenPreview() {
     QuizApplicationTheme {
         SubjectsScreen(
             state = SubjectsScreenUiState.Success(
-                listOf("Tamil", "English", "Maths", "Science", "Social", "GK")
+                listOf("தமிழ்", "அறிவியல்", "சமூக அறிவியல்", "GK")
             ),
             onSubjectSelected = {},
             onBookmarksClicked = {},
             onHistoryClicked = {},
+            onStartDailyQuiz = {}
         )
     }
 }

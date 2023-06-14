@@ -36,6 +36,12 @@ interface QuizDao {
     """)
     suspend fun getQuestionsByTopic(topicId: List<Long>, limit: Int): List<QuestionsEntity>
 
+
+    @Query("""
+        SELECT * FROM questionsentity ORDER BY RANDOM() LIMIT :numberOfQuestions    
+    """)
+    suspend fun getRandomQuestions(numberOfQuestions: Int): List<QuestionsEntity>
+
     @Query("""
         UPDATE questionsentity SET isAttempted = 1 WHERE questionId in (:questionsId)
     """)

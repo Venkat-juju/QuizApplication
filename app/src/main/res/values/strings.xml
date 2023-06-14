@@ -36,6 +36,9 @@
     <string name="practice">Practice</string>
     <string name="test">Test</string>
     <string name="topics">Topics</string>
+    <string name="completed_with_exclamatory">Completed!</string>
+    <string name="daily_quiz_title">Daily Quiz - Today</string>
+    <string name="daily_quiz_number_of_questions">Total questions: 10</string>
 
     <!-- content description -->
     <string name="back_press">Back press</string>
@@ -43,4 +46,5 @@
     <string name="correct_answer">correct answer</string>
     <string name="wrong_answer">wrong answer</string>
     <string name="delete_history">Delete History</string>
+    <string name="completed_check_mark">Completed checkmark</string>
 </resources>

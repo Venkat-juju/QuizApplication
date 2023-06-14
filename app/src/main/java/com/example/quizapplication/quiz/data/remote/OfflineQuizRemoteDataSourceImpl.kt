@@ -34,7 +34,6 @@ class OfflineQuizRemoteDataSourceImpl @Inject constructor(
                 )
             )
         }
-        delay(1000)
         return NZResult.Success(
             data = topics
         )
@@ -69,6 +68,39 @@ class OfflineQuizRemoteDataSourceImpl @Inject constructor(
                 )
             }
         }
+        return NZResult.Success(
+            data = questions
+        )
+    }
+
+    override suspend fun getRandomQuestions(numberOfQuestions: Int): NZResult<List<Question>> {
+        val questions = mutableListOf<Question>()
+        val jsons = appContext.readJSONFromAsset(TAMIL_QUESTIONS_FILE_NAME)
+        val questionsJson = jsons?.first()?.get("questions") as JSONArray
+        repeat(10) { index ->
+            val currentQuestion = questionsJson[index] as JSONObject
+            val currentTopicId = currentQuestion.getInt("topicId").toLong()
+            var explanation: String? = null
+            try {
+                explanation = currentQuestion.getString("explanation").trim()
+            } catch (e: Exception) {}
+            questions.add(
+                Question(
+                    questionId = currentQuestion.getInt("questionId").toLong(),
+                    topicId = currentTopicId,
+                    options = listOf(
+                        Option(currentQuestion.getString("option1").trim()),
+                        Option(currentQuestion.getString("option2").trim()),
+                        Option(currentQuestion.getString("option3").trim()),
+                        Option(currentQuestion.getString("option4").trim())
+                    ),
+                    correctAnswer = Option(currentQuestion.getString("answer").trim()),
+                    questionStr = currentQuestion.getString("question").trim(),
+                    explanation = explanation
+                )
+            )
+        }
+
         return NZResult.Success(
             data = questions
         )

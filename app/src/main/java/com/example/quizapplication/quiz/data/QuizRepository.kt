@@ -14,7 +14,7 @@ interface QuizRepository {
 
     suspend fun getQuestions(topicId: List<Long>, count: Int): NZResult<List<Question>>
 
-    suspend fun saveQuizHistory(questions: List<Question>): NZResult<Long>
+    suspend fun saveQuizHistory(historyTitle: String, questions: List<Question>): NZResult<Long>
 
     suspend fun bookmarkQuestion(question: Question): NZResult<Boolean>
 

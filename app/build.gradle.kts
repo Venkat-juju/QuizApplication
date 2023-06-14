@@ -112,4 +112,7 @@ dependencies {
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
     kapt("androidx.room:room-compiler:$roomVersion")
+
+    // preference datastore
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
 }

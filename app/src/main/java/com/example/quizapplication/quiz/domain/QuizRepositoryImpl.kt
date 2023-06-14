@@ -34,7 +34,6 @@ class QuizRepositoryImpl @Inject constructor(
             when(topicsFromRemote) {
                 is NZResult.Success -> {
                     localDataSource.insertTopics(topicsFromRemote.data.map(RemoteTopic::toTopicEntity))
-
                     return NZResult.Success(
                         data = localDataSource.getAllSubjects().map { Subject(subjectName = it) }
                     )
@@ -85,6 +84,11 @@ class QuizRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getQuestions(topicId: List<Long>, count: Int): NZResult<List<Question>> {
+
+        if (topicId.isEmpty()) {
+            return getRandomQuestions(count)
+        }
+
         val cachedQuestions = localDataSource.getQuestionsByTopic(topicId, count)
 
         if (cachedQuestions.isEmpty() || cachedQuestions.size < count) {
@@ -109,12 +113,15 @@ class QuizRepositoryImpl @Inject constructor(
         return NZResult.Success(data = cachedQuestions.map(QuestionsEntity::toQuestion))
     }
 
-    override suspend fun saveQuizHistory(questions: List<Question>): NZResult<Long> {
+    override suspend fun saveQuizHistory(historyTitle: String, questions: List<Question>): NZResult<Long> {
         val historyId = (localDataSource.getLatestHistoryId() ?: 0L) + 1
 
         val questionsHistory = questions.map {
             QuizHistoryEntity(
-                historyId = historyId, questionId = it.questionId, selectedOptionIndex = it.options.indexOf(it.selectedOption)
+                historyId = historyId,
+                historyTitle = historyTitle,
+                questionId = it.questionId,
+                selectedOptionIndex = it.options.indexOf(it.selectedOption)
             )
         }
 
@@ -206,7 +213,7 @@ class QuizRepositoryImpl @Inject constructor(
                 QuizHistory(
                     historyId = historyItem.key,
                     totalQuestions = historyItem.value.size,
-                    historyTitle = topicsName.joinToString(", "),
+                    historyTitle = historyItem.value.first().historyTitle,
                     correctAnswers = numberOfCorrectAnsweredQuestions,
                     wrongAnswers = totalQuestions - numberOfCorrectAnsweredQuestions - numberOfSkippedQuestions,
                     skippedAnswer = numberOfSkippedQuestions
@@ -237,6 +244,28 @@ class QuizRepositoryImpl @Inject constructor(
         }
 
         return selectedOptionIndex == correctAnswerIndex
+    }
+
+    private suspend fun getRandomQuestions(numberOfQuestions: Int): NZResult<List<Question>> {
+        val cachedQuestions = localDataSource.getRandomQuestions(numberOfQuestions)
+
+        if (cachedQuestions.size < numberOfQuestions) {
+            val remoteQuestions = remoteDataSource.getRandomQuestions(numberOfQuestions)
+
+            when(remoteQuestions) {
+                is NZResult.Success -> {
+                    return NZResult.Success(
+                        data = remoteQuestions.data
+                    )
+                }
+                is NZResult.Error -> {
+                    return NZResult.Error("Unable to fetch the questions")
+                }
+                is NZResult.Loading -> return NZResult.Loading<List<Question>>(true)
+            }
+        } else {
+            return NZResult.Success(data = cachedQuestions.map(QuestionsEntity::toQuestion))
+        }
     }
 }
 

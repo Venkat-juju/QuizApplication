@@ -43,7 +43,9 @@ fun QuizRoute() {
                 val initialStateDestination = initialState.destination.route
                 when {
                     initialStateDestination?.contains(QuizModuleScreen.TOPIC_LIST.name) == true ||
-                    initialStateDestination?.contains(QuizModuleScreen.HISTORY.name) == true -> {
+                    initialStateDestination?.contains(QuizModuleScreen.HISTORY.name) == true ||
+                    initialStateDestination?.contains(QuizModuleScreen.QUIZ_DETAIL.name) == true ||
+                    initialStateDestination?.contains(QuizModuleScreen.QUIZ_RESULT.name) == true -> {
                         slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Right, tween(700))
                     }
                     else -> null
@@ -54,7 +56,8 @@ fun QuizRoute() {
 
                 when {
                     targetStateDestination?.contains(QuizModuleScreen.TOPIC_LIST.name) == true ||
-                    targetStateDestination?.contains(QuizModuleScreen.HISTORY.name) == true -> {
+                    targetStateDestination?.contains(QuizModuleScreen.HISTORY.name) == true ||
+                    targetStateDestination?.contains(QuizModuleScreen.QUIZ_DETAIL.name) == true -> {
                         slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(700))
                     }
                     else -> null
@@ -77,6 +80,11 @@ fun QuizRoute() {
                 },
                 onHistoryClicked = {
                     navController.navigate(QuizModuleScreen.HISTORY.name)
+                },
+                onStartDailyQuiz = {
+                    navController.navigate(
+                        route = "${QuizModuleScreen.QUIZ_DETAIL.name}?type=${QuizDetailType.TEST.ordinal}&numberOfQuestions=10"
+                    )
                 }
             )
         }
@@ -163,7 +171,8 @@ fun QuizRoute() {
 
                 when {
                     initialStateDestination?.contains(QuizModuleScreen.TOPIC_LIST.name) == true ||
-                    initialStateDestination?.contains(QuizModuleScreen.HISTORY.name) == true -> {
+                    initialStateDestination?.contains(QuizModuleScreen.HISTORY.name) == true ||
+                    initialStateDestination?.contains(QuizModuleScreen.QUIZ_CATEGORIES.name) == true -> {
                         slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left, tween(700))
                     }
                     initialStateDestination?.contains(QuizModuleScreen.QUIZ_RESULT.name) == true -> {
@@ -177,7 +186,8 @@ fun QuizRoute() {
 
                 when {
                     targetStateDestination?.contains(QuizModuleScreen.TOPIC_LIST.name) == true ||
-                    targetStateDestination?.contains(QuizModuleScreen.HISTORY.name) == true -> {
+                    targetStateDestination?.contains(QuizModuleScreen.HISTORY.name) == true ||
+                    targetStateDestination?.contains(QuizModuleScreen.QUIZ_CATEGORIES.name) == true-> {
                         slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, tween(700))
                     }
                     targetStateDestination?.contains(QuizModuleScreen.QUIZ_RESULT.name) == true -> {
@@ -231,7 +241,8 @@ fun QuizRoute() {
                 val targetStateDestination = targetState.destination.route
                 when {
                     targetStateDestination?.contains(QuizModuleScreen.TOPIC_LIST.name) == true ||
-                        targetStateDestination?.contains(QuizModuleScreen.QUIZ_DETAIL.name) == true -> {
+                    targetStateDestination?.contains(QuizModuleScreen.QUIZ_DETAIL.name) == true ||
+                    targetStateDestination?.contains(QuizModuleScreen.QUIZ_CATEGORIES.name) == true -> {
                         slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right, tween(700))
                     }
                     else -> null
