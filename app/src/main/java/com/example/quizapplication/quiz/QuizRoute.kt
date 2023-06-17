@@ -208,8 +208,8 @@ fun QuizRoute() {
                     viewModel.onEvent(QuizDetailViewModelEvent.OnQuestionBookmarked(questionIndex))
                 },
                 onSubmit = { viewModel.onEvent(QuizDetailViewModelEvent.OnSubmit) },
-                onSubmitted = { total, correct, wrong, historyId ->
-                    navController.navigate("${QuizModuleScreen.QUIZ_RESULT.name}/$total,$correct,$wrong?id=$historyId")
+                onSubmitted = { total, correct, wrong, historyId, quizType ->
+                    navController.navigate("${QuizModuleScreen.QUIZ_RESULT.name}/$total,$correct,$wrong?id=$historyId&quizType=$quizType")
                 },
                 onBackClicked = {
                     navController.popBackStack()
@@ -218,11 +218,15 @@ fun QuizRoute() {
         }
 
         composable(
-            route = "${QuizModuleScreen.QUIZ_RESULT.name}/{stats}?id={id}",
+            route = "${QuizModuleScreen.QUIZ_RESULT.name}/{stats}?id={id}&quizType={quizType}",
             arguments = listOf(
                 navArgument("id") {
                     type = NavType.LongType
                     defaultValue = -1L
+                },
+                navArgument("quizType") {
+                    type = NavType.IntType
+                    defaultValue = 0
                 }
             ),
             enterTransition = {
@@ -252,6 +256,7 @@ fun QuizRoute() {
 
             val stats = backStackEntry.arguments?.getString("stats")?.split(",")?.map(String::toInt)
             val historyId = backStackEntry.arguments?.getLong("id")
+            val quizType = backStackEntry.arguments?.getInt("quizType") ?: QuizDetailType.PRACTICE.ordinal
 
             val totalQuestions = stats?.getOrNull(0) ?: 0
             val correctAnswers = stats?.getOrNull(1) ?: 0
@@ -261,6 +266,7 @@ fun QuizRoute() {
                 correctAnswers = correctAnswers,
                 wrongAnswers = wrongAnswers,
                 skippedAnswers = totalQuestions - (correctAnswers + wrongAnswers),
+                quizType = quizType,
                 onShowAnswerClicked = {
                     navController.navigate(
                         route = "${QuizModuleScreen.QUIZ_DETAIL.name}?" +

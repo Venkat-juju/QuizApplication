@@ -169,6 +169,10 @@ class QuizDetailViewModel @Inject constructor(
 
                     quizDataStore.updateDailyQuizAttendedDate(todayDate)
                 }
+
+                if (type == QuizDetailType.TEST) {
+                    quizDataStore.addCoins(getTheNumberOfCorrectAnswers())
+                }
                 state = when(saveHistoryResponse) {
                     is NZResult.Success -> {
                         (state as QuizDetailScreenState.Success).copy(isSubmitting = true, historyId = saveHistoryResponse.data)
@@ -185,8 +189,6 @@ class QuizDetailViewModel @Inject constructor(
 
     private fun fetchRevealQuiz(quizId: Long) {
         viewModelScope.launch {
-            delay(1000)
-
             val getHistoryResponse = quizRepository.getHistoryQuestions(quizId)
 
             when(getHistoryResponse) {
@@ -211,85 +213,19 @@ class QuizDetailViewModel @Inject constructor(
                     )
                 }
             }
-
-//            val questionsReposnse =
-            /*val questionsList = listOf(
-                UiQuestion(
-                    question = "What is the difference between temperature and heat?",
-                    options = listOf(
-                        "Temperature is the energy transferred, while heat measures hotness or coldness",
-                        "Temperature measures hotness or coldness, while heat is the energy transferred due to a temperature difference",
-                        "Temperature and heat are the same thing",
-                        "None of the above"
-                    ),
-                    correctOption = "Temperature measures hotness or coldness, while heat is the energy transferred due to a temperature difference",
-                    explanation = null,
-                    selectedOption = "Temperature and heat are the same thing",
-                    isBookmarked = false
-                ),
-                UiQuestion(
-                    question = "What are thermometers used for?",
-                    options = listOf(
-                        "Measuring heat",
-                        "Measuring temperature",
-                        "Measuring both heat and temperature",
-                        "None of the above"
-                    ),
-                    correctOption = "Measuring temperature",
-                    explanation = null,
-                    selectedOption = "Measuring heat",
-                    isBookmarked = false
-                ),
-                UiQuestion(
-                    question = "Which temperature scales are most commonly used?",
-                    options = listOf(
-                        "Fahrenheit, Celsius, and Kelvin",
-                        "Fahrenheit, Celsius, and Newton",
-                        "Celsius, Kelvin, and Newton",
-                        "Celsius, Fahrenheit, and Rankine"
-                    ),
-                    correctOption = "Fahrenheit, Celsius, and Kelvin",
-                    explanation = null,
-                    selectedOption = "Fahrenheit, Celsius, and Kelvin",
-                    isBookmarked = false
-                ),
-                UiQuestion(
-                    question = "What is specific heat capacity?",
-                    options = listOf(
-                        "The amount of heat required to change the phase of a substance without a change in temperature",
-                        "The amount of heat required to raise the temperature of a substance by one degree Celsius or Kelvin per unit mass",
-                        "The transfer of heat through electromagnetic waves, such as infrared radiation",
-                        "None of the above"
-                    ),
-                    correctOption = "The amount of heat required to raise the temperature of a substance by one degree Celsius or Kelvin per unit mass",
-                    explanation = null,
-                    selectedOption = "The amount of heat required to raise the temperature of a substance by one degree Celsius or Kelvin per unit mass",
-                    isBookmarked = false
-                ),
-                UiQuestion(
-                    question = "What are the three methods of heat transfer?",
-                    options = listOf(
-                        "Conduction, convection, and reflection",
-                        "Conduction, convection, and absorption",
-                        "Conduction, convection, and radiation",
-                        "Conduction, convection, and refraction"
-                    ),
-                    correctOption = "Conduction, convection, and radiation",
-                    explanation = null,
-                    selectedOption = "Conduction, convection, and reflection",
-                    isBookmarked = false
-                )
-            )
-            delay(1000)
-            state = QuizDetailScreenState.Success(
-                questions = questionsList,
-                title = "Sample Title with large string in it",
-                quizType = type
-            )*/
         }
     }
 
     private fun isDailyQuiz(): Boolean {
         return topics.isBlank()
+    }
+
+    private fun getTheNumberOfCorrectAnswers(): Int {
+        if (state is QuizDetailScreenState.Success) {
+            return  (state as QuizDetailScreenState.Success).questions.count {
+                it.selectedOption == it.correctOption
+            }
+        }
+        return 0
     }
 }

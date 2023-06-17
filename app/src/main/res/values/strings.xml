@@ -39,6 +39,17 @@
     <string name="completed_with_exclamatory">Completed!</string>
     <string name="daily_quiz_title">Daily Quiz - Today</string>
     <string name="daily_quiz_number_of_questions">Total questions: 10</string>
+    <string name="one_coin_for_each_correct_answer">1 coin for each correct answer</string>
+    <string name="number_of_questions_cant_be_zero">Number of questions can\'t be 0</string>
+    <string name="review_answers">Review Answers</string>
+    <string name="exit">Exit</string>
+    <string name="success_message">Yay! You nailed it 🎉</string>
+    <string name="failure_message">Don\'t Worry! Failures are the stepping stones 💪</string>
+    <string name="result_uppercase">RESULT</string>
+    <string name="correct_answers">Correct Answers:</string>
+    <string name="wrong_answers">Wrong Answers:</string>
+    <string name="skipped_questions">Skipped Questions:</string>
+    <string name="total_questions">Total Questions:</string>
 
     <!-- content description -->
     <string name="back_press">Back press</string>
@@ -47,4 +58,5 @@
     <string name="wrong_answer">wrong answer</string>
     <string name="delete_history">Delete History</string>
     <string name="completed_check_mark">Completed checkmark</string>
+    <string name="coin">Coin</string>
 </resources>

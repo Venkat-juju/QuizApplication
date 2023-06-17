@@ -69,6 +69,21 @@ fun SubjectsScreen(
                         }
                     )
                 },
+                actions = {
+                    Text(
+                        "${state.earnedCoins}",
+                        modifier = Modifier.padding(end = 4.dp),
+                        fontWeight = FontWeight.Bold
+                    )
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_coin),
+                        contentDescription = stringResource(id = R.string.coin),
+                        tint = Color.Unspecified,
+                        modifier = Modifier
+                            .size(30.dp)
+                            .padding(end = 8.dp)
+                    )
+                },
                 colors = TopAppBarDefaults.largeTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     scrolledContainerColor = MaterialTheme.colorScheme.primary,

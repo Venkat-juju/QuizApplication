@@ -19,10 +19,25 @@ class QuizDataStore @Inject constructor(
         preferences[PreferenceKeys.DAILY_QUIZ_LAST_ATTENDED_DATE] ?: -1
     }
 
+    val numberOfCoinsEarned: Flow<Int> = dataStore.data.catch {
+        emit(emptyPreferences())
+    }.map { preferences ->
+        preferences[PreferenceKeys.COINS_EARNED] ?: 0
+    }
+
     suspend fun updateDailyQuizAttendedDate(date: Int) {
         try {
             dataStore.edit { preferences ->
                 preferences[PreferenceKeys.DAILY_QUIZ_LAST_ATTENDED_DATE] = date
+            }
+        } catch (e: Exception) {}
+    }
+
+    suspend fun addCoins(numberOfCoins: Int) {
+        try {
+            dataStore.edit { preferences ->
+                preferences[PreferenceKeys.COINS_EARNED] =
+                    preferences[PreferenceKeys.COINS_EARNED]?.plus(numberOfCoins) ?: 0
             }
         } catch (e: Exception) {}
     }

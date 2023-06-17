@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,6 +39,7 @@ fun QuizResultScreen(
     correctAnswers: Int,
     wrongAnswers: Int,
     skippedAnswers: Int,
+    quizType: Int,
     onShowAnswerClicked: () -> Unit,
     onExitClicked: () -> Unit
 ) {
@@ -66,8 +68,8 @@ fun QuizResultScreen(
             )
 
             Text(
-                text = if(wrongAnswers < correctAnswers) "Yay! You nailed it 🎉"
-                else "Don't Worry! Failures are the stepping stones 💪",
+                text = if(wrongAnswers < correctAnswers) stringResource(id = R.string.success_message)
+                else stringResource(id = R.string.failure_message),
                 style = MaterialTheme.typography.headlineMedium,
                 modifier = Modifier.padding(horizontal = 24.dp),
                 textAlign = TextAlign.Center
@@ -84,7 +86,7 @@ fun QuizResultScreen(
                     .padding(8.dp)
             ) {
                 Text(
-                    text = "RESULT",
+                    text = stringResource(id = R.string.result_uppercase),
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
                         .padding(8.dp),
@@ -97,7 +99,7 @@ fun QuizResultScreen(
                         .fillMaxWidth()
                         .padding(4.dp)
                 ) {
-                    Text(text = "Correct Questions:")
+                    Text(text = stringResource(id = R.string.correct_answers))
                     Text(text = correctAnswers.toString())
                 }
                 Row(
@@ -106,7 +108,7 @@ fun QuizResultScreen(
                         .fillMaxWidth()
                         .padding(4.dp)
                 ) {
-                    Text(text = "Wrong Questions:")
+                    Text(text = stringResource(id = R.string.wrong_answers))
                     Text(text = wrongAnswers.toString())
                 }
                 Row(
@@ -115,7 +117,7 @@ fun QuizResultScreen(
                         .fillMaxWidth()
                         .padding(4.dp)
                 ) {
-                    Text(text = "Skipped Questions:")
+                    Text(text = stringResource(id = R.string.skipped_questions))
                     Text(text = skippedAnswers.toString())
                 }
                 Divider(modifier = Modifier.padding(vertical = 8.dp))
@@ -125,18 +127,35 @@ fun QuizResultScreen(
                         .fillMaxWidth()
                         .padding(4.dp)
                 ) {
-                    Text(text = "Total Questions:")
+                    Text(text = stringResource(id = R.string.total_questions))
                     Text(text = (correctAnswers + wrongAnswers + skippedAnswers).toString())
                 }
             }
 
+            if (quizType == QuizDetailType.TEST.ordinal) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = "Coins Earned:    $correctAnswers")
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_coin),
+                        contentDescription = stringResource(id = R.string.coin),
+                        tint = Color.Unspecified,
+                        modifier = Modifier
+                            .size(25.dp)
+                            .padding(start = 4.dp)
+                    )
+                }
+            }
+
+
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Button(onClick = { onShowAnswerClicked() }, modifier = Modifier.width(200.dp)) {
-                    Text(text = "Review Answers")
+                    Text(text = stringResource(id = R.string.review_answers))
                 }
 
                 OutlinedButton(onClick = onExitClicked, modifier = Modifier.width(200.dp)) {
-                    Text("Exit")
+                    Text(stringResource(id = R.string.exit))
                 }
             }
         }
@@ -147,6 +166,13 @@ fun QuizResultScreen(
 @Composable
 fun QuizResultPreview() {
     QuizApplicationTheme {
-        QuizResultScreen(10, 5, 2, {}, {})
+        QuizResultScreen(
+            10,
+            5,
+            2,
+            quizType = 1,
+            {},
+            {}
+        )
     }
 }

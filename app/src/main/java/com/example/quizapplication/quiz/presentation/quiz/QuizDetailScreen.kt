@@ -74,7 +74,7 @@ fun QuizDetailScreen(
     onOptionSelected: (Int, String) -> Unit,
     onBookmarkButtonClicked: (Int) -> Unit,
     onSubmit: () -> Unit,
-    onSubmitted: (Int, Int, Int, Long) -> Unit,
+    onSubmitted: (Int, Int, Int, Long, Int) -> Unit,
     onBackClicked: () -> Unit,
 ) {
 
@@ -99,7 +99,8 @@ fun QuizDetailScreen(
                 state.questions.filter {
                     !it.selectedOption.isNullOrBlank() && it.selectedOption != it.correctOption
                 }.size,
-                state.historyId ?: -1L
+                state.historyId ?: -1L,
+                state.type.ordinal
             )
         }
     }

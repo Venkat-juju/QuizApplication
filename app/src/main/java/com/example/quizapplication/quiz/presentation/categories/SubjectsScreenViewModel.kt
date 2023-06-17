@@ -22,7 +22,7 @@ class SubjectsScreenViewModel @Inject constructor(
     private val quizDataStore: QuizDataStore
 ) : ViewModel() {
 
-    var state: SubjectsScreenUiState by mutableStateOf(SubjectsScreenUiState.Loading)
+    var state: SubjectsScreenUiState by mutableStateOf(SubjectsScreenUiState.Loading())
         private set
 
     private var isDailyQuizCompleted: Boolean = false
@@ -30,6 +30,7 @@ class SubjectsScreenViewModel @Inject constructor(
     init {
         fetchAllSubjects()
         updateDailyQuizStatus()
+        updateNumberOfCoins()
     }
 
     private fun fetchAllSubjects() {
@@ -49,7 +50,7 @@ class SubjectsScreenViewModel @Inject constructor(
                     }
                 }
                 is NZResult.Loading -> {
-                    SubjectsScreenUiState.Loading
+                    SubjectsScreenUiState.Loading()
                 }
                 is NZResult.Error -> {
                     SubjectsScreenUiState.Error(
@@ -72,6 +73,26 @@ class SubjectsScreenViewModel @Inject constructor(
                         state = (state as SubjectsScreenUiState.Success).copy(isDailyQuizCompleted = true)
                     } else {
                         isDailyQuizCompleted = true
+                    }
+                }
+            }
+        }
+    }
+
+    private fun updateNumberOfCoins() {
+        viewModelScope.launch {
+            quizDataStore.numberOfCoinsEarned.collect { numberOfCoins ->
+                state = when(state) {
+                    is SubjectsScreenUiState.Loading -> {
+                        (state as SubjectsScreenUiState.Loading).copy(numberOfEarnedCoins = numberOfCoins)
+                    }
+
+                    is SubjectsScreenUiState.Success -> {
+                        (state as SubjectsScreenUiState.Success).copy(numberOfEarnedCoins = numberOfCoins)
+                    }
+
+                    is SubjectsScreenUiState.Error -> {
+                        (state as SubjectsScreenUiState.Error).copy(numberOfEarnedCoins = numberOfCoins)
                     }
                 }
             }

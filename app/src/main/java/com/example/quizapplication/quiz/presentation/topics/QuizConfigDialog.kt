@@ -16,12 +16,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.material3.TabPosition
@@ -35,10 +38,14 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogProperties
 import com.example.quizapplication.R
 import com.example.quizapplication.quiz.domain.model.Topic
 import com.example.quizapplication.quiz.presentation.quiz.QuizDetailType
@@ -54,11 +61,21 @@ fun QuizConfigDialog(
 ) {
 
     val context = LocalContext.current
+    val configuration = LocalConfiguration.current
 
     var type: Int by rememberSaveable { mutableStateOf(0) }
     var numberOfQuestions: Int by rememberSaveable { mutableStateOf(totalQuestions / 5) }
 
+    /**
+     * usePlatformDefaultWidth = false is use as a temporary fix to allow
+     * height recalculation during recomposition. This, however, causes
+     * Dialog's to occupy full width in Compact mode. Therefore max width
+     * is configured below. This should be removed when there's fix to
+     * https://issuetracker.google.com/issues/221643630
+     */
     androidx.compose.material3.AlertDialog(
+        properties = DialogProperties(usePlatformDefaultWidth = false),
+        modifier = Modifier.widthIn(max = configuration.screenWidthDp.dp - 80.dp),
         onDismissRequest = onCancel,
         confirmButton = {
             Button(
@@ -127,6 +144,21 @@ fun QuizConfigDialog(
                     valueRange = 0f..totalQuestions.toFloat(),
                     steps = 4
                 )
+                if (type == QuizDetailType.TEST.ordinal) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_coin),
+                            contentDescription = stringResource(id = R.string.coin),
+                            tint = Color.Unspecified,
+                            modifier = Modifier
+                                .size(30.dp)
+                                .padding(end = 8.dp)
+                        )
+                        Text(stringResource(id = R.string.one_coin_for_each_correct_answer))
+                    }
+                }
             }
         }
     )
