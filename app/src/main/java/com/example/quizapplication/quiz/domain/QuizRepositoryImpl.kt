@@ -254,6 +254,10 @@ class QuizRepositoryImpl @Inject constructor(
 
             when(remoteQuestions) {
                 is NZResult.Success -> {
+                    localDataSource.insertQuestions(
+                        remoteQuestions.data.map(Question::toQuestionsEntity)
+                    )
+
                     return NZResult.Success(
                         data = remoteQuestions.data
                     )

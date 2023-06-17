@@ -212,7 +212,7 @@ fun SubjectsGrid(
                         .height(150.dp)
                         .padding(horizontal = 4.dp, vertical = 4.dp)
                         .clickable {
-                            onSubjectSelected(state.subjects[index - 1])
+                            onSubjectSelected(state.subjects[index - 2])
                         }
                 ) {
                     Column(
