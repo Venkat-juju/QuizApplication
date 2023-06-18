@@ -4,6 +4,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,13 +14,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
@@ -54,19 +56,13 @@ fun SubjectsScreen(
     onHistoryClicked: () -> Unit,
     onStartDailyQuiz: () -> Unit,
 ) {
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
-
     Scaffold(
         topBar = {
-            LargeTopAppBar(
+            CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = stringResource(id = R.string.subject),
-                        style = if (scrollBehavior.state.collapsedFraction < 0.5) {
-                            MaterialTheme.typography.displayMedium
-                        } else {
-                            MaterialTheme.typography.titleLarge
-                        }
+                        text = stringResource(id = R.string.app_name),
+                        fontWeight = FontWeight.Bold
                     )
                 },
                 actions = {
@@ -91,12 +87,10 @@ fun SubjectsScreen(
                     titleContentColor = MaterialTheme.colorScheme.onPrimary,
                     actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
                 ),
-                scrollBehavior = scrollBehavior,
             )
         },
         containerColor = MaterialTheme.colorScheme.surfaceVariant,
         modifier = Modifier
-            .nestedScroll(scrollBehavior.nestedScrollConnection)
             .fillMaxSize()
     ) { innerPadding ->
         when (state) {
@@ -109,13 +103,15 @@ fun SubjectsScreen(
                 }
             }
             is SubjectsScreenUiState.Success -> {
-                SubjectsGrid(
+                HomePageContent(
                     state = state,
                     onBookmarksClicked = onBookmarksClicked,
                     onHistoryClicked = onHistoryClicked,
-                    onSubjectSelected = onSubjectSelected,
                     onStartDailyQuiz = onStartDailyQuiz,
-                    modifier = Modifier.padding(innerPadding)
+                    onSubjectSelected = onSubjectSelected,
+                    modifier = Modifier
+                        .padding(innerPadding)
+                        .padding(4.dp)
                 )
             }
             is SubjectsScreenUiState.Error -> Unit
@@ -124,138 +120,184 @@ fun SubjectsScreen(
 }
 
 @Composable
-fun SubjectsGrid(
+fun HomePageContent(
     state: SubjectsScreenUiState.Success,
     onBookmarksClicked: () -> Unit,
     onHistoryClicked: () -> Unit,
-    onSubjectSelected: (String) -> Unit,
     onStartDailyQuiz: () -> Unit,
+    onSubjectSelected: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LazyVerticalGrid(
-        columns = GridCells.Adaptive(minSize = 180.dp),
+    Column(
         modifier = modifier
-            .fillMaxSize()
-            .padding(4.dp)
+            .verticalScroll(rememberScrollState())
     ) {
-        items(
-            span = { index ->
-                if (index <= 1) {
-                    GridItemSpan(maxLineSpan)
-                } else {
-                    GridItemSpan(1)
-                }
-            },
-            count = state.subjects.size + 2
+        Text(
+            text = "Importants",
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier
+                .padding(start = 4.dp)
+                .padding(vertical = 8.dp)
+        )
+        HistoryAndBookmarksCard(
+            onHistoryClicked = onHistoryClicked,
+            onBookmarksClicked = onBookmarksClicked,
+            modifier = Modifier
+                .padding(bottom = 4.dp)
+        )
+        DailyQuizCard(
+            onStart = onStartDailyQuiz,
+            isCompleted = state.isDailyQuizCompleted,
+            modifier = Modifier.padding(vertical = 4.dp)
+        )
+        Text(
+            text = stringResource(id = R.string.subjects),
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.SemiBold,
+            modifier = Modifier
+                .padding(start = 4.dp)
+                .padding(vertical = 8.dp)
+        )
+        SubjectsGrid(
+            state = state,
+            onSubjectSelected = onSubjectSelected
+        )
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun SubjectsGrid(
+    state: SubjectsScreenUiState.Success,
+    onSubjectSelected: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    FlowRow(
+        modifier = modifier
+    ) {
+        repeat(
+            state.subjects.size
         ) { index ->
-            if (index == 0) {
-                ElevatedCard(
-                    modifier = Modifier
-                        .height(75.dp),
-                    shape = RoundedCornerShape(4.dp)
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .fillMaxHeight()
-                                .weight(1f)
-                                .clickable { onBookmarksClicked() }
-                                .padding(start = 12.dp),
-                            horizontalArrangement = Arrangement.Center
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_bookmark_colored),
-                                contentDescription = "",
-                                modifier = Modifier.size(30.dp),
-                                tint = Color.Unspecified
-                            )
-                            Text(
-                                stringResource(id = R.string.bookmarks),
-                                modifier = Modifier.padding(start = 8.dp),
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 18.sp
-                            )
-                        }
-                        Divider(
-                            modifier = Modifier
-                                .fillMaxHeight()
-                                .width(2.dp)
-                                .padding(vertical = 12.dp)
-                                .clip(RoundedCornerShape(50))
-                        )
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .fillMaxHeight()
-                                .weight(1f)
-                                .clickable { onHistoryClicked() },
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Center
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.ic_history_colored),
-                                contentDescription = "History Icon",
-                                modifier = Modifier.padding(start = 12.dp),
-                                tint = Color.Unspecified
-                            )
-                            Text(
-                                text = stringResource(id = R.string.history),
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 18.sp,
-                                modifier = Modifier.padding(start = 8.dp)
-                            )
-                        }
-                    }
-                }
-            } else if (index == 1) {
-                DailyQuizCard(
-                    onStart = onStartDailyQuiz,
-                    isCompleted = state.isDailyQuizCompleted,
-                    modifier = Modifier.padding(vertical = 4.dp)
+            SubjectCard(
+                subjectName = state.subjects[index],
+                onSubjectSelected = onSubjectSelected
+            )
+        }
+    }
+}
+
+@Composable
+fun HistoryAndBookmarksCard(
+    onHistoryClicked: () -> Unit,
+    onBookmarksClicked: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    ElevatedCard(
+        modifier = modifier
+            .height(75.dp),
+        shape = RoundedCornerShape(4.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxHeight()
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+                    .weight(1f)
+                    .clickable { onBookmarksClicked() }
+                    .padding(start = 12.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_bookmark_colored),
+                    contentDescription = "",
+                    modifier = Modifier.size(30.dp),
+                    tint = Color.Unspecified
                 )
-            } else {
-                ElevatedCard(
-                    modifier = Modifier
-                        .height(150.dp)
-                        .padding(horizontal = 4.dp, vertical = 4.dp)
-                        .clickable {
-                            onSubjectSelected(state.subjects[index - 2])
-                        }
-                ) {
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Icon(
-                            painter = painterResource(id =
-                                when {
-                                    state.subjects[index-2] == "தமிழ்" -> R.drawable.ic_tamil_logo
-                                    state.subjects[index-2] == "அறிவியல்" -> R.drawable.ic_science_logo
-                                    state.subjects[index-2] == "சமூக அறிவியல்" -> R.drawable.ic_social_science_logo
-                                    else -> R.drawable.ic_gk_logo
-                                }
-                            ),
-                            contentDescription = "History Icon",
-                            tint = Color.Unspecified
-                        )
-                        Text(
-                            text = state.subjects[index - 2],
-                            modifier = Modifier
-                                .padding(top = 10.dp),
-                            style = MaterialTheme.typography.titleMedium
-                        )
-                    }
-                }
+                Text(
+                    stringResource(id = R.string.bookmarks),
+                    modifier = Modifier.padding(start = 8.dp),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp
+                )
             }
+            Divider(
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .width(2.dp)
+                    .padding(vertical = 12.dp)
+                    .clip(RoundedCornerShape(50))
+            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+                    .weight(1f)
+                    .clickable { onHistoryClicked() },
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_history_colored),
+                    contentDescription = "History Icon",
+                    modifier = Modifier.padding(start = 12.dp),
+                    tint = Color.Unspecified
+                )
+                Text(
+                    text = stringResource(id = R.string.history),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    modifier = Modifier.padding(start = 8.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun SubjectCard(
+    subjectName: String,
+    onSubjectSelected: (String) -> Unit
+) {
+    ElevatedCard(
+        modifier = Modifier
+            .height(150.dp)
+            .width(190.dp)
+            .padding(horizontal = 4.dp, vertical = 4.dp)
+            .clickable {
+                onSubjectSelected(subjectName)
+            }
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(
+                painter = painterResource(id =
+                    when (subjectName) {
+                        "தமிழ்" -> R.drawable.ic_tamil_logo
+                        "அறிவியல்" -> R.drawable.ic_science_logo
+                        "சமூக அறிவியல்" -> R.drawable.ic_social_science_logo
+                        else -> R.drawable.ic_gk_logo
+                    }
+                ),
+                contentDescription = "Subject Icon",
+                tint = Color.Unspecified
+            )
+            Text(
+                text = subjectName,
+                modifier = Modifier
+                    .padding(top = 10.dp),
+                style = MaterialTheme.typography.titleMedium
+            )
         }
     }
 }
@@ -333,6 +375,22 @@ fun DailyQuizCardPreview() {
         DailyQuizCard(
             onStart = {},
             isCompleted = true
+        )
+    }
+}
+
+@Preview
+@Composable
+fun HomePageContentPreview() {
+    QuizApplicationTheme {
+        HomePageContent(
+            state = SubjectsScreenUiState.Success(
+                listOf("தமிழ்", "அறிவியல்", "சமூக அறிவியல்", "GK")
+            ),
+            onBookmarksClicked = { /*TODO*/ },
+            onHistoryClicked = { /*TODO*/ },
+            onStartDailyQuiz = {},
+            onSubjectSelected = {}
         )
     }
 }
