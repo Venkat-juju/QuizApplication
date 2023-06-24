@@ -50,6 +50,7 @@
     <string name="wrong_answers">Wrong Answers:</string>
     <string name="skipped_questions">Skipped Questions:</string>
     <string name="total_questions">Total Questions:</string>
+    <string name="previous_year_questions">Previous year questions</string>
 
     <!-- content description -->
     <string name="back_press">Back press</string>

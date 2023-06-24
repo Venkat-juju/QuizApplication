@@ -1,5 +1,6 @@
 package com.example.quizapplication.quiz.presentation.categories
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,30 +15,31 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LargeTopAppBar
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -69,7 +71,7 @@ fun SubjectsScreen(
                     Text(
                         "${state.earnedCoins}",
                         modifier = Modifier.padding(end = 4.dp),
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.ExtraBold
                     )
                     Icon(
                         painter = painterResource(id = R.drawable.ic_coin),
@@ -132,13 +134,8 @@ fun HomePageContent(
         modifier = modifier
             .verticalScroll(rememberScrollState())
     ) {
-        Text(
-            text = "Importants",
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.SemiBold,
-            modifier = Modifier
-                .padding(start = 4.dp)
-                .padding(vertical = 8.dp)
+        SectionTitle(
+            "Importants"
         )
         HistoryAndBookmarksCard(
             onHistoryClicked = onHistoryClicked,
@@ -151,19 +148,118 @@ fun HomePageContent(
             isCompleted = state.isDailyQuizCompleted,
             modifier = Modifier.padding(vertical = 4.dp)
         )
-        Text(
-            text = stringResource(id = R.string.subjects),
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.SemiBold,
-            modifier = Modifier
-                .padding(start = 4.dp)
-                .padding(vertical = 8.dp)
+        SectionTitle(
+            stringResource(id = R.string.subjects)
         )
         SubjectsGrid(
             state = state,
             onSubjectSelected = onSubjectSelected
         )
+        SectionTitle(
+            stringResource(id = R.string.previous_year_questions)
+        )
+        PreviousYearQuestionsGrid()
+        SectionTitle(titleString = "Connect With Us")
+        SocialMedia(
+            modifier = Modifier
+                .padding(bottom = 12.dp)
+        )
     }
+}
+
+@Composable
+fun SocialMedia(
+    modifier: Modifier = Modifier
+) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 12.dp)
+    ) {
+        SMCard(
+            mediaName = "Instagram",
+            icon = painterResource(id = R.drawable.ic_instagram),
+            modifier = Modifier.weight(1f)
+        )
+        SMCard(
+            mediaName = "Whatsapp",
+            icon = painterResource(id = R.drawable.ic_whatsapp),
+            modifier = Modifier.weight(1f)
+        )
+        SMCard(
+            mediaName = "Twitter",
+            icon = painterResource(id = R.drawable.ic_twitter),
+            modifier = Modifier.weight(1f)
+        )
+        SMCard(
+            mediaName = "Facebook",
+            icon = painterResource(id = R.drawable.ic_facebook),
+            modifier = Modifier.weight(1f)
+        )
+    }
+}
+
+@Composable
+fun SMCard(
+    mediaName: String,
+    icon: Painter,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        border = BorderStroke(1.dp, Color.Black.copy(alpha = 0.1f)),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
+        modifier = modifier
+            .fillMaxWidth(),
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 24.dp, bottom = 12.dp)
+                .padding(horizontal = 8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(
+                painter = icon,
+                contentDescription = "logo",
+                tint = Color.Unspecified,
+                modifier = Modifier
+                    .size(30.dp)
+            )
+            Text(
+                text = mediaName,
+                style = MaterialTheme.typography.labelSmall,
+                modifier = Modifier.padding(top = 12.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun PreviousYearQuestionsGrid() {
+    LazyRow(
+    ) {
+        items(10) {number ->
+            SubjectCard(
+                subjectName = "namee",
+                onSubjectSelected = {}
+            )
+        }
+    }
+}
+
+@Composable
+fun SectionTitle(titleString: String) {
+    Text(
+        text = titleString,
+        fontSize = 20.sp,
+        fontWeight = FontWeight.ExtraBold,
+        modifier = Modifier
+            .padding(start = 4.dp)
+            .padding(vertical = 8.dp)
+    )
 }
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -196,7 +292,7 @@ fun HistoryAndBookmarksCard(
     ElevatedCard(
         modifier = modifier
             .height(75.dp),
-        shape = RoundedCornerShape(4.dp)
+        shape = RoundedCornerShape(4.dp),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -407,6 +503,17 @@ fun SubjectsScreenPreview() {
             onBookmarksClicked = {},
             onHistoryClicked = {},
             onStartDailyQuiz = {}
+        )
+    }
+}
+
+@Preview
+@Composable
+fun SMCardPreview() {
+    QuizApplicationTheme {
+        SMCard(
+            mediaName = "Instagram",
+            icon = painterResource(id = R.drawable.ic_instagram)
         )
     }
 }
