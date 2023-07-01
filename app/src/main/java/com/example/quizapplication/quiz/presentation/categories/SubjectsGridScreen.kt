@@ -421,7 +421,8 @@ fun DailyQuizCard(
                 Icon(
                     painter = painterResource(id = R.drawable.ic_test),
                     contentDescription = "Daily quiz logo",
-                    tint = Color.Unspecified
+                    tint = Color.Unspecified,
+                    modifier = Modifier.size(80.dp)
                 )
             }
             Column(

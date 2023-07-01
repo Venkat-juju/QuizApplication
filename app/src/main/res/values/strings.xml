@@ -51,6 +51,8 @@
     <string name="skipped_questions">Skipped Questions:</string>
     <string name="total_questions">Total Questions:</string>
     <string name="previous_year_questions">Previous year questions</string>
+    <string name="learn">Learn</string>
+    <string name="profile">Profile</string>
 
     <!-- content description -->
     <string name="back_press">Back press</string>

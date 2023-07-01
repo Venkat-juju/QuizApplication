@@ -41,11 +41,13 @@ class SubjectsScreenViewModel @Inject constructor(
                     if (isDailyQuizCompleted) {
                         SubjectsScreenUiState.Success(
                             subjects = subjects.data.map{ it.subjectName },
-                            isDailyQuizCompleted = true
+                            isDailyQuizCompleted = true,
+                            numberOfEarnedCoins = state.earnedCoins
                         )
                     } else {
                         SubjectsScreenUiState.Success(
-                            subjects = subjects.data.map{ it.subjectName }
+                            subjects = subjects.data.map{ it.subjectName },
+                            numberOfEarnedCoins =  state.earnedCoins
                         )
                     }
                 }

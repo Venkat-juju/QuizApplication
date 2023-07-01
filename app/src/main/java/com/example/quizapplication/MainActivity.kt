@@ -3,7 +3,7 @@ package com.example.quizapplication
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.example.quizapplication.quiz.QuizRoute
+import com.example.quizapplication.ui.NezyApp
 import com.example.quizapplication.ui.theme.QuizApplicationTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -16,8 +16,10 @@ class MainActivity : ComponentActivity() {
         setContent {
             QuizApplicationTheme {
                 // A surface container using the 'background' color from the theme
-                QuizRoute()
+//                QuizRoute()
+                NezyApp()
             }
         }
     }
 }
+
