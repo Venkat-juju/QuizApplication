@@ -1,6 +1,7 @@
 package com.example.quizapplication.quiz.presentation.topics
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.spring
@@ -144,7 +145,7 @@ fun QuizConfigDialog(
                     valueRange = 0f..totalQuestions.toFloat(),
                     steps = 4
                 )
-                if (type == QuizDetailType.TEST.ordinal) {
+                AnimatedVisibility(visible = type == QuizDetailType.TEST.ordinal) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -159,6 +160,10 @@ fun QuizConfigDialog(
                         Text(stringResource(id = R.string.one_coin_for_each_correct_answer))
                     }
                 }
+
+//                if (type == QuizDetailType.TEST.ordinal) {
+//
+//                }
             }
         }
     )
