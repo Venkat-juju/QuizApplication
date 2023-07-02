@@ -19,14 +19,27 @@ fun ProfileRoute() {
         navController = navController,
         startDestination = ProfileScreens.PROFILE_SCREEN.name
     ) {
-        profileScreen()
+        profileScreen(
+            onNavigateToBookmarks = {
+                // TODO: this needs to be moved from here. this is profile module and this screen is quiz module.
+            },
+            onNavigateToHistory = {
+                // TODO: this needs ot be moved from here. this is profile module and this screen is quiz module.
+            }
+        )
     }
 }
 
-fun NavGraphBuilder.profileScreen() {
+fun NavGraphBuilder.profileScreen(
+    onNavigateToHistory: () -> Unit,
+    onNavigateToBookmarks: () -> Unit,
+) {
     composable(
         route = ProfileScreens.PROFILE_SCREEN.name
     ) {
-        ProfileScreen()
+        ProfileScreen(
+            onNavigateToBookmarks = onNavigateToBookmarks,
+            onNavigateToHistory = onNavigateToHistory,
+        )
     }
 }

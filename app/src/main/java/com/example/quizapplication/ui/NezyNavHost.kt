@@ -6,7 +6,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.quizapplication.learn.LearnRoute
-import com.example.quizapplication.profile.ProfileRoute
 import com.example.quizapplication.quiz.QuizRoute
 
 @Composable
@@ -24,8 +23,8 @@ fun NezyNavHost(
         composable(route = TopDestination.TEST.name) {
             QuizRoute(bottomBarVisibility = bottomBarVisibility)
         }
-        composable(route = TopDestination.PROFILE.name) {
+        /*composable(route = TopDestination.PROFILE.name) {
             ProfileRoute()
-        }
+        }*/
     }
 }

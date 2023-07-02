@@ -2,14 +2,13 @@ package com.example.quizapplication.profile.presentation
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -31,7 +30,10 @@ import com.example.quizapplication.ui.theme.QuizApplicationTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(
+    onNavigateToBookmarks: () -> Unit,
+    onNavigateToHistory: () -> Unit,
+) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -51,7 +53,10 @@ fun ProfileScreen() {
                     .fillMaxWidth()
                     .padding(vertical = 36.dp)
             )
-            SavedView()
+            SavedView(
+                onNavigateToBookmarks = onNavigateToBookmarks,
+                onNavigateToHistory = onNavigateToHistory,
+            )
         }
     }
 }
@@ -82,7 +87,10 @@ fun ProfileView(
 }
 
 @Composable
-fun SavedView() {
+fun SavedView(
+    onNavigateToHistory: () -> Unit,
+    onNavigateToBookmarks: () -> Unit
+) {
     Column(
         modifier = Modifier.padding(horizontal = 12.dp)
     ) {
@@ -93,10 +101,11 @@ fun SavedView() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .clickable { onNavigateToBookmarks() }
                 .padding(vertical = 12.dp)
         ) {
             Icon(
-                imageVector = Icons.Filled.Settings,
+                painter = painterResource(id = R.drawable.ic_bookmark_outlined),
                 contentDescription = "Bookmarks icon",
                 modifier = Modifier.padding(end = 12.dp)
             )
@@ -105,10 +114,11 @@ fun SavedView() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .clickable { onNavigateToHistory() }
                 .padding(vertical = 12.dp)
         ) {
             Icon(
-                imageVector = Icons.Filled.Settings,
+                painter = painterResource(id = R.drawable.ic_history),
                 contentDescription = "Bookmarks icon",
                 modifier = Modifier.padding(end = 12.dp)
             )
@@ -129,6 +139,9 @@ fun ProfileViewPreview() {
 @Composable
 fun ProfileScreenPreview() {
     QuizApplicationTheme {
-        ProfileScreen()
+        ProfileScreen(
+            onNavigateToHistory = {},
+            onNavigateToBookmarks = {}
+        )
     }
 }

@@ -113,21 +113,21 @@ enum class TopDestination(
     val unSelectedIconResId: Int,
     val titleStringId: Int
 ) {
-    LEARN(
-        selectedIconResId = R.drawable.ic_book,
-        unSelectedIconResId = R.drawable.ic_book_outline,
-        titleStringId = R.string.learn
-    ),
     TEST(
         selectedIconResId = R.drawable.ic_test_filled,
         unSelectedIconResId = R.drawable.ic_test_outlined,
         titleStringId = R.string.test
     ),
-    PROFILE(
-        selectedIconResId = R.drawable.ic_profile,
-        unSelectedIconResId = R.drawable.ic_profile_outlined,
-        titleStringId = R.string.profile
-    )
+    LEARN(
+        selectedIconResId = R.drawable.ic_book,
+        unSelectedIconResId = R.drawable.ic_book_outline,
+        titleStringId = R.string.learn
+    ),
+//    PROFILE(
+//        selectedIconResId = R.drawable.ic_profile,
+//        unSelectedIconResId = R.drawable.ic_profile_outlined,
+//        titleStringId = R.string.profile
+//    )
 }
 
 private fun NavDestination?.isTopLevelDestinationInHierarchy(destination: TopDestination) =
