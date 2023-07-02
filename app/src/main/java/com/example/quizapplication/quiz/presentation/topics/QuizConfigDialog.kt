@@ -160,10 +160,6 @@ fun QuizConfigDialog(
                         Text(stringResource(id = R.string.one_coin_for_each_correct_answer))
                     }
                 }
-
-//                if (type == QuizDetailType.TEST.ordinal) {
-//
-//                }
             }
         }
     )
